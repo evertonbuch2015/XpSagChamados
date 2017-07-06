@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html" locale="#{indexBean.localeCode}">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=yes" />
+	</f:facet>
+	
+	<h:outputScript  	name="LocaleCalendario.js" 		 library="js"/>
+	<h:outputScript  	name="app.js" 					 library="js"/>
+	<h:outputScript 	name="js/ripple-effect.js"		 library="adamantium-layout" />
+	<h:outputScript 	name="js/perfect-scrollbar.js" 	 library="adamantium-layout" />
+	<h:outputScript 	name="js/layout.js" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/core-layout.css" 		 library="adamantium-layout" />
+	<h:outputStylesheet name="css/animate.css" 			 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-font.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/ripple-effect.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/perfect-scrollbar.css" library="adamantium-layout" />
+	<h:outputStylesheet name="css/font-awesome.css" 	 library="adamantium-layout" />
+	<h:outputStylesheet name="css/adamantium-layout.css" library="adamantium-layout" />
+	<h:outputStylesheet name="layout.css" 				 library="style"/>
+	<h:outputStylesheet name="componentes.css" 			 library="style"/>	
+	
+	<title><ui:insert name="tituloPagina" /></title>
+
+	<ui:insert name="head"/>
+</h:head>
+
+
+<h:body>
+	<div class="bu-inner-container">
+	
+	
+		<header class="bu-topbar">
+			<h:graphicImage library="images" name="logo-sistema.png" />			
+			
+			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
+		</header>
+				
+				
+		<h:form prependId="false">		
+			<aside class="bu-sidebar js-sidebar">				
+				<p:panelMenu style="width:99%">
+				
+			        <p:submenu label="#{label.menu_cadastro}">
+			            <p:menuitem value="#{label.menu_usuario}" 
+			            	url="/cadUsuario.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
+			            
+			            <p:menuitem value="#{label.menu_empresas}"
+			            	url="/cadEmpresas.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
+			            
+			        </p:submenu>
+			        			         		      
+			        		
+			        			        
+			        <p:submenu label="#{label.menu_suporte}">
+						<p:menuitem value="#{label.menu_solicitacoes}" 		
+							url="/solicitacoes.xhtml?faces-redirect=true"			icon="fa fa-suitcase" />
+	                            
+			        </p:submenu>
+			        
+			        
+			        <p:submenu label="#{label.menu_relatorios}">
+			            <p:menuitem value="#{label.menu_solicitacoes}" icon="fa fa-money"/>			            
+			        </p:submenu>
+			        
+			        <p:submenu label="#{label.menu_configuracoes}" >	                    
+	                    <p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
+	                    <p:menuitem value="#{label.menu_sobre}" 	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	
+	                    <p:menuitem value="#{label.menu_sair}"		action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>                    
+			        </p:submenu>
+			    </p:panelMenu>											
+			</aside>
+		
+			<section class="bu-content js-content">								
+				<ui:insert name="conteudo"/>						
+				
+				<p:confirmDialog global="true">
+					<p:commandButton value="#{label.txt_sim}" type="button" icon="ui-icon-check" styleClass="ui-confirmdialog-yes"/>
+					<p:commandButton value="#{label.txt_nao}" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"/>
+				</p:confirmDialog>
+				
+				<p:dialog 
+					width="300" height="140"
+					header="#{label.txt_titulo_idioma}"			
+					widgetVar="dialogIdioma" modal="true" draggable="true" 
+					closable="true" resizable="true" position="center center"
+					showEffect="explode" hideEffect="explode">
+				
+					<p:panelGrid columns="1" cellpadding="3" 
+						styleClass="ui-panelgrid-blank">
+																				
+						<p:outputLabel value="#{label.txt_selecione_idioma}: " /> 
+						<p:selectOneMenu value="#{indexBean.localeCode}" effect="fade">
+							<f:selectItems value="#{indexBean.countries}"/>
+							<f:ajax event="change" render="@all"
+								listener="#{indexBean.localeCodeChanged}"/>
+						</p:selectOneMenu>
+							
+														
+						<p:commandButton value="Confirmar"
+							styleClass="bu-botao-azul"
+							style="margin-top:20px;"
+							onclick="PF('dialogIdioma').hide();" />	
+							
+					</p:panelGrid>	
+				</p:dialog>
+					
+			</section>
+		</h:form>
+		
+		
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+		<p:dialog 
+			widgetVar="statusDialog" modal="false" draggable="false" 
+			closable="false" resizable="false" showHeader="false">
+			<h:graphicImage library="images" name="ajax-loader2.gif" />
+		</p:dialog>
+		
+	</div>
+	<!--end bu-inner-container -->	
+	
+</h:body>
+</f:view>
+</html>

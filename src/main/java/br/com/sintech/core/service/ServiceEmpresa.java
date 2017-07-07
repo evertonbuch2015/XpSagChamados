@@ -1,5 +1,6 @@
 package br.com.sintech.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.sintech.core.dao.EmpresaDao;
@@ -17,6 +18,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 	public ServiceEmpresa() {
 		empresaDao = new EmpresaDao();
 	}
+	
 	
 	public String salvar(Empresa entidate)throws Exception {
 		if (entidate.getIdEmpresa() == null) {
@@ -41,7 +43,6 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 	            		" \nErro: " + UtilErros.getMensagemErro(e));
 			}			
 		}
-		
 	}
 
 	
@@ -54,12 +55,11 @@ public class ServiceEmpresa implements GenericService<Empresa>{
         	throw new PersistenciaException("Ocorreu uma exceção ao Excluir a Empresa!" + 
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
-		
 	}
 
 	
 	public Empresa carregarEntidade(Empresa Empresa) throws PersistenciaException{
-		String jpql = "Select e From Empresa e where e.idEmpresa = ?1";
+		String jpql = "Select e From Empresa e left JOIN FETCH e.endereco where e.idEmpresa = ?1";
 		try {
 			return empresaDao.findOne(jpql, Empresa.getIdEmpresa());
 		} catch (Exception e) {
@@ -75,7 +75,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 			return empresaDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList<Empresa>();
 		}
 	}
 
@@ -84,16 +84,12 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 		List<Empresa> lista = null;
 		
 		try {
-
 			if(tipoFiltro.equals(TipoFiltro.CODIGO)){						
 				String jpql = "Select e From Empresa e where e.codigo in (" + valorFiltro + ")";
-				lista = empresaDao.find(jpql);
-					
+				lista = empresaDao.find(jpql);					
 			}
-			else if(tipoFiltro.equals(TipoFiltro.NOME)){	
-				
-					lista = empresaDao.find("Select e From Empresa e where e.nomeRazao like ?",valorFiltro);
-				
+			else if(tipoFiltro.equals(TipoFiltro.NOME)){					
+					lista = empresaDao.find("Select e From Empresa e where e.nomeRazao like ?",valorFiltro);				
 			}
 			
 			return lista;
@@ -104,8 +100,6 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 		}
 	}
 
-
-	
 	
 	public void consisteAntesEditar(Empresa entidade) throws NegocioException{
 

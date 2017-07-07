@@ -40,6 +40,10 @@ public class Empresa implements Serializable {
     @Column(name = "CODIGO" ,nullable = true , length = 2, unique = true)
 	private String codigo;
    
+    
+    @Column(name = "FILIAL" ,nullable = true , length = 2, unique = true)
+	private String filial;
+    
 	
 	@NotEmpty(message="O Nome deve ser informado!")
     @Column(name = "NOME_RAZAO" ,nullable = true , length = 70)
@@ -92,7 +96,7 @@ public class Empresa implements Serializable {
     private Character ativo;
     
      
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_CADENDERECO")
     private Endereco endereco;
 
@@ -116,6 +120,15 @@ public class Empresa implements Serializable {
 		this.codigo = codigo;
 	}
 
+	
+	public String getFilial() {
+		return filial;
+	}
+	
+	public void setFilial(String filial) {
+		this.filial = filial;
+	}
+	
 
 	public String getNomeRazao() {
 		return nomeRazao;
@@ -135,14 +148,26 @@ public class Empresa implements Serializable {
 	}
 
 
+	public String getDocumentoFormatado(){
+		if(this.documento != null){
+			return 	documento.substring(0, 2) + "." + documento.substring(2, 5) + "." + documento.substring(5, 8)
+			+ "/" + documento.substring(8,12) +"-"+ documento.substring(12);
+		}else{
+			return null;
+		}
+		
+	}
+
 	public String getDocumento() {
 		return documento;
 	}
-
-	public void setDocumento(String documento) {
-		this.documento = documento;
+	
+	public void setDocumento(String cnpj) {
+		if(cnpj != null){
+			this.documento = cnpj.replace(".", "").replace("-", "").replace("/", "");
+		}
 	}
-
+	
 
 	public String getInscEstadual() {
 		return inscEstadual;
@@ -220,21 +245,23 @@ public class Empresa implements Serializable {
 	}
 
 
+	public Character getAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(Character ativo) {
+		this.ativo = ativo;
+	}
+
+	
 	public Boolean isAtivo() {
 		if (this.ativo == null)
 			return null;
 		
 		return ativo.equals('S') ? true : false;
 	}
-
-	public void setAtivo(Boolean value) {
-		if (value == null) {
-			this.ativo = null;
-		} else {
-			this.ativo = value == true ? 'S' : 'N';
-		}
-	}
-
+	
+	
 
 	public Endereco getEndereco() {
 		return endereco;

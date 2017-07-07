@@ -4,16 +4,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.sintech.core.entity.Empresa;
+import br.com.sintech.core.entity.Endereco;
 import br.com.sintech.core.entity.Estados;
 import br.com.sintech.core.service.ServiceEmpresa;
 import br.com.sintech.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> {
 	
 	public enum TipoFiltro{
@@ -54,6 +55,7 @@ public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> {
 	@Override
 	public Empresa criarEntidade() {
 		this.entidade = new Empresa();
+		this.entidade.setEndereco(new Endereco());
 		entidade.setDataCadastro(new Date());
 		return entidade;
 	}	

@@ -1,5 +1,8 @@
 package br.com.sintech.view.managedBean;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,12 +10,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.sintech.core.entity.Chamado;
+import br.com.sintech.core.entity.ChamadoAnexo;
 import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.Programa;
@@ -20,13 +27,11 @@ import br.com.sintech.core.entity.SituacaoChamado;
 import br.com.sintech.core.service.ServiceChamado;
 import br.com.sintech.core.util.Constantes;
 import br.com.sintech.view.util.SessionContext;
-import br.com.sintech.view.util.UploadArquivo;
 import br.com.sintech.view.util.UtilMensagens;
 
 
 @ManagedBean
-//@ViewScoped
-@SessionScoped
+@ViewScoped
 public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements Serializable {
 
 	private static final long serialVersionUID = 905551446067723831L;
@@ -51,7 +56,8 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 	private TipoFiltro filtro;
 	private SituacaoChamado situacaoFiltro;
 	private Date dataFiltro;
-	
+	private String nomeProgramaTela;
+	private StreamedContent file;
 	
 	
 	public ChamadoBean() {
@@ -84,23 +90,7 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 		return chamado;
 	}
 	
-
 	
-	/*public void excluirEmpresa(Empresa empresa){
-		if(this.entidade.getEmpresas().contains(empresa)){
-			this.entidade.getEmpresas().remove(empresa);
-		}
-	}
-		
-	
-	public void adicionarEmpresa(Empresa empresa){		
-		if(!this.entidade.getEmpresas().contains(empresa)){
-			this.entidade.getEmpresas().add(empresa);
-		}else{
-			UtilMensagens.mensagemAtencao("Empresa já cadastrada para este Usuário");
-		}
-	}	*/
-		
 	
 	public void programaSelecionada(SelectEvent event){
 		this.entidade.setPrograma((Programa) event.getObject());
@@ -108,31 +98,35 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 	
 	
 	public void doUpload(FileUploadEvent fileUploadEvent) {
-       //UploadedFile uploadedFile = fileUploadEvent.getFile();
-        //String fileNameUploaded = uploadedFile.getFileName();
-        //long fileSizeUploaded = uploadedFile.getSize();
-        //byte[] arquivo = uploadedFile.getContents();
-        
-        UploadArquivo uploadArquivo = new UploadArquivo();
-        uploadArquivo.fileUpload(fileUploadEvent, ".jpg", "/image/");
-        uploadArquivo.gravar();
-        
-        
-        /*ChamadoAnexo chamadoAnexo = new ChamadoAnexo();
-        chamadoAnexo.setArquivo(arquivo);
-        chamadoAnexo.setNome(fileNameUploaded);
-        chamadoAnexo.setTamanho(fileSizeUploaded);
-        chamadoAnexo.setExtensao(uploadedFile.getContentType());*/
-        
-        
-    
-        //entidade.getAnexos().add(chamadoAnexo);
-        
-        //System.out.println(arquivo);
-
+       UploadedFile uploadedFile = fileUploadEvent.getFile();
+       
+       String fileNameUploaded = uploadedFile.getFileName();     
+       String extencao = fileNameUploaded.substring(fileNameUploaded.lastIndexOf("."), fileNameUploaded.length());       
+      
+       ChamadoAnexo chamadoAnexo = new ChamadoAnexo();
+       chamadoAnexo.setArquivo(uploadedFile.getContents());
+       chamadoAnexo.setNome(fileNameUploaded);
+       chamadoAnexo.setTamanho(((Long)uploadedFile.getSize()).intValue());
+       chamadoAnexo.setExtensao(extencao);       
+       chamadoAnexo.setChamado(entidade);
+       chamadoAnexo.setContentType(uploadedFile.getContentType());
+       
+       entidade.getAnexos().add(chamadoAnexo);
     }
 	
-	// =======================GET e SET=================================================
+	
+	public void doDownload(ChamadoAnexo anexo){
+		InputStream stream = null;
+		
+		try {
+			stream = new FileInputStream(
+					anexo.getCaminho() + anexo.getNome());
+			
+			this.file = new DefaultStreamedContent(stream, anexo.getContentType(), anexo.getNome());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}        
+	}
 	
 	// =============================GET AND SET=================================
 	
@@ -202,6 +196,22 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 		this.dataFiltro = dataFiltro;
 	}
 
-
 	
+	public String getNomeProgramaTela() {
+		if(entidade.getPrograma() != null){
+			this.nomeProgramaTela = entidade.getPrograma().getNome() + "  /  " + entidade.getPrograma().getPrograma(); 
+			return nomeProgramaTela;
+		}else{
+			return null;
+		}
+	}
+	
+	public void setNomeProgramaTela(String nomeProgramaTela) {
+		this.nomeProgramaTela = nomeProgramaTela;
+	}
+
+
+	public StreamedContent getFile() {
+		return file;
+	}
 }

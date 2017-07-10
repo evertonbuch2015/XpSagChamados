@@ -98,6 +98,7 @@ public class LoginBean implements Serializable{
 		return usuario.getEmpresas();
 	}
 	
+	
 	public Empresa getEmpresa() {
 		return empresa;
 	}

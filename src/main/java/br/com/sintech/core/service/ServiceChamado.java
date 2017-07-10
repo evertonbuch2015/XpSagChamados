@@ -1,11 +1,14 @@
 package br.com.sintech.core.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.sintech.core.dao.ChamadoAnexoDao;
 import br.com.sintech.core.dao.ChamadoDao;
 import br.com.sintech.core.entity.Chamado;
+import br.com.sintech.core.entity.ChamadoAnexo;
 import br.com.sintech.core.entity.ChamadoMovimento;
 import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.SituacaoChamado;
@@ -14,6 +17,7 @@ import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.core.util.UtilErros;
 import br.com.sintech.view.managedBean.ChamadoBean.TipoFiltro;
 import br.com.sintech.view.util.SessionContext;
+import br.com.sintech.view.util.UploadArquivo;
 
 public class ServiceChamado implements GenericService<Chamado> {
 
@@ -26,21 +30,39 @@ public class ServiceChamado implements GenericService<Chamado> {
 	
 	
 	@Override
-	public String salvar(Chamado entidate) throws Exception {
-		if (entidate.getIdChamado() == null) {
+	public String salvar(Chamado entidade) throws Exception {
+		if (entidade.getIdChamado() == null) {
 			
 			try {
 				
 				ChamadoMovimento movimento = new ChamadoMovimento();
-				movimento.setChamado(entidate);
+				movimento.setChamado(entidade);
 				movimento.setData(new Date());
 				movimento.setDescricao("Chamado Aberto");
 				movimento.setSituacao(SituacaoChamado.ABERTO);
 				
-				entidate.getMovimentos().add(movimento);
-				entidate.setUsuario(SessionContext.getInstance().getUsuarioLogado());
 				
-				dao.save(entidate);
+				entidade.getMovimentos().add(movimento);
+				entidade.setUsuario(SessionContext.getInstance().getUsuarioLogado());				
+				
+				String protocolo = 
+						new SimpleDateFormat("ddMMyyyy").format(new java.util.Date())+ 
+						dao.getCodigoProtocolo();
+				
+				entidade.setProtocolo(protocolo);
+				
+				
+				for (ChamadoAnexo anexo : entidade.getAnexos()) {
+					anexo.setCaminho(entidade.getEmpresa().getDiretorioLocal() + "\\" + protocolo+ "\\");
+				}				
+				
+				dao.save(entidade);				
+				
+				UploadArquivo uploadArquivo = new UploadArquivo();
+				for (ChamadoAnexo anexo : entidade.getAnexos()) {										
+					uploadArquivo.gravar(anexo);
+				}
+				
 				return "Cadastro de Chamado Realizado com Sucesso";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -51,7 +73,22 @@ public class ServiceChamado implements GenericService<Chamado> {
 		} else {
 			
 			try {
-				dao.update(entidate);
+				
+				for (ChamadoAnexo anexo : entidade.getAnexos()) {
+					if(anexo.getIdChamadoAnexo() == null){
+						anexo.setCaminho(
+								entidade.getEmpresa().getDiretorioLocal()+ "\\" + entidade.getProtocolo()+ "\\");
+					}											
+				}
+				
+				dao.update(entidade);				
+				
+				UploadArquivo uploadArquivo = new UploadArquivo();
+				for (ChamadoAnexo anexo : entidade.getAnexos()) {										
+					uploadArquivo.gravar(anexo);
+				}
+								
+				
 				return "Chamado Alterado com Sucesso";
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -77,9 +114,17 @@ public class ServiceChamado implements GenericService<Chamado> {
 	
 	@Override
 	public Chamado carregarEntidade(Chamado entidade) throws PersistenciaException {
-		String jpql = "Select c From Chamado c left JOIN FETCH c.programa left JOIN FETCH c.usuario left JOIN FETCH c.movimentos where c.idChamado = ?1";
+		String jpql = "Select c From Chamado c left JOIN FETCH c.programa "
+				+ " left JOIN FETCH c.usuario "
+				+ " left JOIN FETCH c.movimentos "
+				+ " left JOIN FETCH c.empresa "
+				+ " where c.idChamado = ?1";
+		
 		try {
-			return dao.findOne(jpql, entidade.getIdChamado());
+			Chamado chamado = dao.findOne(jpql, entidade.getIdChamado());			
+			chamado.setAnexos(new ChamadoAnexoDao().findByChamado(chamado));
+			
+			return chamado;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Chamado!" + 
@@ -99,10 +144,10 @@ public class ServiceChamado implements GenericService<Chamado> {
 		try {
 			
 			if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-				String jpql = "Select c From Chamado c where c.dataSolicitacao >= ?";				
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ?";				
 				lista = dao.find(jpql, d);
 			}else{
-				String jpql = "Select c From Chamado c where c.dataSolicitacao >= ? and c.empresa = ?";
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? and c.empresa = ?";
 				lista = dao.find(jpql, d, SessionContext.getInstance().getEmpresaUsuarioLogado());
 			}
 			

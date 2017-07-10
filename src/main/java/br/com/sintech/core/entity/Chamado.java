@@ -70,7 +70,7 @@ public class Chamado implements Serializable{
 	private Usuario usuario;
 	
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_CADEMPRESA")
 	private Empresa empresa;
 	
@@ -81,12 +81,14 @@ public class Chamado implements Serializable{
 	
 	
 	@OneToMany(mappedBy = "chamado", targetEntity = ChamadoMovimento.class,
-			fetch = FetchType.LAZY, cascade = CascadeType.ALL)    
+			fetch = FetchType.LAZY, cascade = CascadeType.ALL)   
+	//@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
 	private List<ChamadoMovimento> movimentos;
 	
 	
 	@OneToMany(mappedBy = "chamado", targetEntity = ChamadoAnexo.class,
 			fetch = FetchType.LAZY, cascade = CascadeType.ALL)    
+	//@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
 	private List<ChamadoAnexo> anexos;
 
 	

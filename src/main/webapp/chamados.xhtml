@@ -106,13 +106,15 @@
 							
 							
 						<p:outputLabel value="#{label.data_solicitacao}:" for="dtSolicitacao"/>
-						<p:inputText id="dtSolicitacao" readonly="true"
-							value="#{chamadoBean.entidade.dataSolicitacaoFormatada}" mask="99/99/9999 99:99"/>
+						<p:inputText id="dtSolicitacao"
+							value="#{chamadoBean.entidade.dataSolicitacaoFormatada}" 
+							mask="99/99/9999 99:99" readonly="true"/>
 							
 							
 						<p:outputLabel value="#{label.data_encerramento}:" for="dtEncerramento"/>
-						<p:inputText id="dtEncerramento" readonly="true"
-							value="#{chamadoBean.entidade.dataEncerramentoFormatada}" mask="99/99/9999"/>	
+						<p:inputText id="dtEncerramento"
+							value="#{chamadoBean.entidade.dataEncerramentoFormatada}" 
+							mask="99/99/9999" readonly="true"/>	
 													
 												
 					</p:panelGrid>
@@ -126,7 +128,7 @@
 						<p:outputLabel value="#{label.programa}" for="programa" />
 						<h:panelGrid columns="2">
 	 						<p:inputText id="programa" size="55"
-	 							value="#{chamadoBean.entidade.programa.nome}"
+	 							value="#{chamadoBean.nomeProgramaTela}"
 								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
 								required="true"/>
 								
@@ -145,7 +147,8 @@
 						
 						<p:outputLabel value="#{label.empresa}" for="empresa"/>
 						<p:selectOneMenu id="empresa"
-							value="#{chamadoBean.entidade.empresa}">  
+							value="#{chamadoBean.entidade.empresa}"
+							disabled="#{!chamadoBean.inserindo}">  
 							
 							<f:selectItem itemLabel="Selecione um Registro"/>
 							<f:selectItems value="#{chamadoBean.empresas}"
@@ -164,15 +167,16 @@
 						<p:inputText id="titulo" 
 							value="#{chamadoBean.entidade.titulo}" placeholder="máximo 100 caracteres"
 							required="true" 
-							requiredMessage="Informe o Titulo do Chamado!"/>
+							requiredMessage="Informe o Titulo do Chamado!"
+							readonly="#{chamadoBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.descricao}" for="descricao" />
 						<p:inputTextarea value="#{chamadoBean.entidade.descricao}" id="descricao"
 							style="width: 100%" rows="5" cols="30" counter="display"
-							maxlength="255" counterTemplate="{0} Caracteres Restantes"
+							maxlength="1500" counterTemplate="{0} Caracteres Restantes"
 							autoResize="false" 
-							readonly="!#{chamadoBean.visualizando}" />
+							readonly="#{chamadoBean.visualizando}"/>
 						<h:outputText/>
 						<h:outputText id="display" />
 						
@@ -184,16 +188,47 @@
 
 			<p:tab title="#{label.anexos}">				
 
-					<p:panelGrid
-						styleClass="ui-panelgrid-blank" columns="1"
-						cellpadding="10" layout="grid" style="width: 100%">
-	
-					<p:fileUpload fileUploadListener="#{chamadoBean.doUpload}" mode="advanced"
-                        label="Procurar..." allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" style="width: 100%"/>
-	
-						
-					</p:panelGrid>
+				<p:panelGrid
+					styleClass="ui-panelgrid-blank" columns="1"
+					cellpadding="10" layout="grid" style="width: 100%">
 
+					<p:fileUpload fileUploadListener="#{chamadoBean.doUpload}" mode="advanced"
+	                	label="Procurar..." allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|docx?)$/" 
+	                    style="width: 100%" update="tabelaArquivos"
+	                    disabled="#{chamadoBean.visualizando}"/>					
+				</p:panelGrid>
+				
+				<p:dataTable id="tabelaArquivos" 
+					value="#{chamadoBean.entidade.anexos}"
+					var="anexo"
+					reflow="true"					
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px 0px 20px 0px;">									
+					
+					<p:column headerText="#{label.nome}" width="90">
+						<h:outputText value="#{anexo.nome}" />
+					</p:column>
+
+					<p:column headerText="#{label.extensao}" width="130">
+						<h:outputText value="#{anexo.extensao}" />
+					</p:column>
+					
+					<p:column headerText="#{label.tamanho}" width="180">
+						<h:outputText value="#{anexo.tamanhoFormatado}" />
+					</p:column>	
+					
+					<p:column headerText="#{label.acoes}" width="110">						
+						<p:commandButton actionListener="#{chamadoBean.doDownload(anexo)}" 
+							icon="fa fa-download" update="@this"
+							ajax="false">
+							
+							<p:fileDownload value="#{chamadoBean.file}" />
+						</p:commandButton>
+							
+					</p:column>			
+										
+				</p:dataTable>
+					
 			</p:tab>
 			
 

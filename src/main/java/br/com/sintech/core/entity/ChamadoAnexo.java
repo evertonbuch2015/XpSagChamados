@@ -2,8 +2,10 @@ package br.com.sintech.core.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,13 +29,19 @@ public class ChamadoAnexo implements Serializable {
     @Column(name = "COD_CHAMADOANEXO")
     private Integer idChamadoAnexo;
 	
+	
 	@Column(name="NOME")
 	private String nome;
 	
 	
 	@Lob
-	@Column(name="ARQUIVO")
+	@Column(name="ARQUIVO", updatable=false)	
+	@Basic(fetch=FetchType.LAZY)
 	private byte[] arquivo;
+	
+	
+	@Column(name="CAMINHO", length =100)
+	private String caminho;
 	
 	
 	@Column(name="EXTENSAO", length =5)
@@ -41,14 +49,38 @@ public class ChamadoAnexo implements Serializable {
 
 	
 	@Column(name="TAMANHO")
-	private long tamanho;
+	private Integer tamanho;
 	
 	
 	@ManyToOne
     @JoinColumn(name ="COD_CHAMADO")
     private Chamado chamado;
 	
+
+	@Column(name ="CONTENT_TYPE")
+	private String contentType;
+
 	
+	public ChamadoAnexo() {
+
+	}
+	
+	
+	
+	
+	public ChamadoAnexo(Integer idChamadoAnexo, String nome, String caminho, String extensao, Integer tamanho,
+			Chamado chamado) {
+		this.idChamadoAnexo = idChamadoAnexo;
+		this.nome = nome;
+		this.caminho = caminho;
+		this.extensao = extensao;
+		this.tamanho = tamanho;
+		this.chamado = chamado;
+	}
+
+
+
+
 	//-------------------------------	GETs and SETs------------------------------//
 	
 	public Integer getIdChamadoAnexo() {
@@ -70,6 +102,15 @@ public class ChamadoAnexo implements Serializable {
 		this.arquivo = arquivo;
 	}
 
+	
+	public String getCaminho() {
+		return caminho;
+	}
+	
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
+	}
+	
 
 	public String getExtensao() {
 		return extensao;
@@ -89,12 +130,26 @@ public class ChamadoAnexo implements Serializable {
 		this.nome = nome;
 	}
 
-
-	public long getTamanho() {
+	
+	public String getTamanhoFormatado() {
+		if(tamanho > 0){
+			if(tamanho >= 1024 && tamanho < 1048576){
+				return (tamanho / 1024)+" KB";
+			}else if(tamanho >= 1048576){
+				return (tamanho / 1048576)+" MB";
+			}else{
+				return tamanho + "Bytes";
+			}
+		}else{
+			return "0 Bytes";
+		}		
+	}
+	
+	public Integer getTamanho() {
 		return tamanho;
 	}
 
-	public void setTamanho(long tamanho) {
+	public void setTamanho(Integer tamanho) {
 		this.tamanho = tamanho;
 	}
 
@@ -108,6 +163,14 @@ public class ChamadoAnexo implements Serializable {
 		this.chamado = chamado;
 	}
 
+	
+	public String getContentType() {
+		return contentType;
+	}
+	
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 
 	//--------------------------------	Métodos Auxiliares------------------------------//
 	

@@ -44,8 +44,6 @@ public class Programa implements Serializable{
 	@Column(name = "MENU_SISTEMA")
 	private MenuSistema menu;
 
-
-	
 	
 	public Integer getIdPrograma() {
 		return idPrograma;

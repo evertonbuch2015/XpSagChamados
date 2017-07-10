@@ -50,7 +50,7 @@
 			<aside class="bu-sidebar js-sidebar">				
 				<p:panelMenu style="width:99%">
 				
-			        <p:submenu label="#{label.menu_cadastro}">
+			        <p:submenu label="#{label.menu_cadastro}">			            
 			            <p:menuitem value="#{label.menu_usuario}" 
 			            	url="/usuarios.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
 			            
@@ -64,6 +64,9 @@
 			        		
 			        			        
 			        <p:submenu label="#{label.menu_suporte}">
+			        	<p:menuitem value="Autorizações" 
+			            	url="/autorizacao.xhtml?faces-redirect=true" 		icon="fa fa-lock"/>	
+			        
 						<p:menuitem value="#{label.menu_solicitacoes}" 		
 							url="/chamados.xhtml?faces-redirect=true"			icon="fa fa-suitcase" />
 	                            

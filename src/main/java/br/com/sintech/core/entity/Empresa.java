@@ -98,7 +98,10 @@ public class Empresa implements Serializable {
     @JoinColumn(name ="COD_CADENDERECO")
     private Endereco endereco;
 
-
+    
+    @Column(name = "DIRETORIO_LOCAL")
+    private String diretorioLocal;
+    
     //-------------------------------	GETs and SETs------------------------------//
     
 	public Integer getIdEmpresa() {
@@ -269,6 +272,14 @@ public class Empresa implements Serializable {
 		this.endereco = endereco;
 	}
 
+	
+	public String getDiretorioLocal() {
+		return diretorioLocal;
+	}
+	
+	public void setDiretorioLocal(String diretorioLocal) {
+		this.diretorioLocal = diretorioLocal;
+	}
 	
 	//--------------------------------	Métodos Auxiliares------------------------------//
 

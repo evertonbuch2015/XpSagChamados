@@ -12,30 +12,50 @@
 <h:body>
 
 	<h:form>
-    	<div id="customheader" style="display:none">
-    		<i  class="ui-icon-wrench" ></i>	
-    		<p:outputLabel value="Consulta de Programas" style="margin-left: 10px"/>
-    	</div>
-    	   		  	
-    	<p:separator/>
     	
-    	<p:dataTable id="tabela" 
+    		
+    	<p:panelGrid columns="4"
+			styleClass="ui-panelgrid-blank"
+			style="width:95%"
+			columnClasses="ui-grid-col-3,ui-grid-col-6,ui-grid-col-2,ui-grid-col-1">
+    	
+    		
+    		<p:outputLabel value="#{label.filtrar_registros}" style="margin-top:6px !important"/>
+			
+			<p:inputText id="filtro" 
+				value="#{dialogProgramaBean.filter}" style="width:90%"/>
+			
+			<p:commandButton
+				actionListener="#{dialogProgramaBean.filtrarLista()}"
+				icon="fa fa-search" process="@this filtro" update="tabela">			
+			</p:commandButton>
+			
+			<p:commandButton
+				actionListener="#{dialogProgramaBean.fecharDialog()}"
+				icon="fa fa-close" process="@this">			
+			</p:commandButton>
+			
+    	</p:panelGrid>
+			
+    	
+    	
+    	<p:dataTable id="tabela" widgetVar="tabelaProgramas"
     		value="#{dialogProgramaBean.programas}" var="entidade" 
     		style="font-size: 13px !important;" 
-    		emptyMessage="#{label.msg_tabela_vazia}" rows="10"
+    		emptyMessage="#{label.msg_tabela_vazia}" rows="13"
     		paginator="true" paginatorAlwaysVisible="false" 
     		paginatorPosition="bottom">
     		
-				<p:column headerText="#{label.nome}" width="80">
+				<p:column headerText="#{label.nome}" sortable="true" sortBy="#{entidade.nome}">
 					<h:outputText value="#{entidade.nome}" />
 				</p:column>
 	
-				<p:column headerText="#{label.menu}">
+				<p:column headerText="#{label.menu}" width="100" sortable="true" sortBy="#{entidade.menu}">
 					<h:outputText value="#{entidade.menu}" />
 				</p:column>
 	
 	
-				<p:column headerText="#{label.programa}" width="80">
+				<p:column headerText="#{label.programa}" width="160" sortable="true" sortBy="#{entidade.programa}">
 					<h:outputText value="#{entidade.programa}" />
 				</p:column>				
 				

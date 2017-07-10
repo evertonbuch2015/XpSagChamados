@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml"
+	xmlns:app="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:define name="tituloPagina">
+		#{label.titulo_usuarios}
+	</ui:define>
+
+
+	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_cadastro}"/>
+    		<p:menuitem value="#{label.sub_titulo_usuarios}" url="#" />
+		</p:breadCrumb>
+				
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="5000" />
+		</p:messages>
+		
+		
+		<p:tabView rendered="#{usuarioBean.buscando}" prependId="false">						
+			<p:tab title="Consulta"> 	
+				
+				<p:dataTable id="tabela"
+					value="#{usuarioBean.entidades}" var="entidade" 
+					selection="#{usuarioBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idUsusario}" reflow="true"									
+					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;" 
+					rendered="#{usuarioBean.buscando}">				
+					
+
+					<p:ajax event="rowDblselect" listener="#{usuarioBean.onRowDblClckSelect}"
+						global="false" update="@form"/>
+
+					<p:ajax event="rowSelect" listener="#{usuarioBean.onRowSelect}" />
+
+
+					<p:column headerText="#{label.ativo}" style="width: 7%; ">
+						<p:graphicImage value="/resources/images/checked.png"
+										rendered="#{entidade.isAtivo()}" />
+						<p:graphicImage value="/resources/images/unchecked.png"
+										rendered="#{not entidade.isAtivo()}" />
+					</p:column>
+
+					<p:column headerText="#{label.codigo}" style="width: 7%;">
+						<h:outputText value="#{entidade.idUsusario}" />
+					</p:column>
+										
+					<p:column headerText="#{label.nome_colaborador}" style="width: 30%;">
+						<h:outputText value="#{entidade.nomeColaborador}" />
+					</p:column>
+
+					<p:column headerText="#{label.nome_usuario}" style="width:20%;">
+						<h:outputText value="#{entidade.nomeUsuario}" />
+					</p:column>
+
+					<p:column headerText="#{label.grupo}" style="width:20%;">
+						<h:outputText value="#{entidade.grupoUsuario}" />
+					</p:column>
+					
+					<p:column headerText="#{label.acoes}" exportable="false" width="110">						
+						<p:commandButton actionListener="#{usuarioBean.editar(entidade)}" 
+							icon="ui-icon-pencil" update="@form"/>
+							
+						<p:commandButton actionListener="#{usuarioBean.excluir(entidade)}" 
+							icon="ui-icon-trash" update="@form">
+							
+							<p:confirm header="#{label.confirmacao}" 
+								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+						</p:commandButton>
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>	
+		
+		
+		
+		<p:tabView rendered="#{!usuarioBean.buscando}">					
+			<p:tab title="#{label.dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+				<div class="ui-fluid">
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-6">
+
+
+						<p:outputLabel value="#{label.codigo}" for="id"/>
+						<p:inputText id="id"
+							value="#{usuarioBean.entidade.idUsusario}"
+							readonly="True"/>
+							
+	
+						<p:outputLabel value="#{label.nome_colaborador}" for="nome" />
+						<p:inputText id="nome"
+							value="#{usuarioBean.entidade.nomeColaborador}"
+							required="true" requiredMessage="Informe nome do Colaborador!"
+							readonly="#{usuarioBean.visualizando}"/>
+					
+					</p:panelGrid>
+					
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="10" layout="grid"
+						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
+						
+						<p:outputLabel value="#{label.nome_usuario}" for="usr" />
+						<p:inputText id="usr"
+							value="#{usuarioBean.entidade.nomeUsuario}" 
+							readonly="#{usuarioBean.visualizando}" 
+							onblur="value=value.toUpperCase()"
+							required="true" requiredMessage="Informe o Usuário!">
+							<f:validateLength maximum="15"/>							
+						</p:inputText>
+						
+						
+						<p:outputLabel value="#{label.senha}" for="senha" />
+						<p:password id="senha" 
+							value="#{usuarioBean.entidade.senha}" 
+							feedback="true"
+							required="true" readonly="#{usuarioBean.visualizando}"
+							requiredMessage="Informe a senha!" redisplay="true">
+						</p:password>
+	
+						
+						<p:outputLabel value="#{label.setor}" for="setor" />
+						<p:selectOneMenu id="setor" 
+							value="#{usuarioBean.entidade.setor}" 
+							editable="true" autoWidth="false"> 
+							<f:selectItems value="#{usuarioBean.setores}" />
+						</p:selectOneMenu>
+											
+						
+						<p:outputLabel value="#{label.grupo}" for="grupo" />
+						<p:selectOneMenu id="grupo"
+							value="#{usuarioBean.entidade.grupoUsuario}"
+							required="true"
+							requiredMessage="Informe o Grupo de Acesso"> 
+							<f:selectItems value="#{usuarioBean.grupoUsuarios}" />
+						</p:selectOneMenu>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="4"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-1 bu-texto,ui-grid-col-4,ui-grid-col-1 bu-texto,ui-grid-col-4">
+							
+						<p:outputLabel value="#{label.em_ferias}" for="em_ferias"/>	
+						<p:selectOneButton id="em_ferias"
+							value="#{usuarioBean.entidade.emFerias}"
+							disabled="#{usuarioBean.visualizando}"
+							styleClass="bu-selectOneButton"
+							style="	max-width: 35%;">
+            				<f:selectItem itemLabel="#{label.sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
+        				
+        				
+        				<p:outputLabel value="#{label.ativo}" for="ativo"/>	
+						<p:selectOneButton id="ativo"
+							value="#{usuarioBean.entidade.ativo}" 
+							disabled="#{usuarioBean.visualizando}"
+							styleClass="bu-selectOneButton"
+							style="	max-width: 35%;">
+							
+            				<f:selectItem itemLabel="#{label.sim}" itemValue="S"/>
+            				<f:selectItem itemLabel="#{label.nao}" itemValue="N"/>
+        				</p:selectOneButton>
+        				
+					</p:panelGrid>
+					
+				</div>
+			</p:tab>
+
+
+			<!--  Inicio da Tab Empresas-->
+			<p:tab title="#{label.empresas}" id="tabDadosEmpresas">		
+			
+				<p:panelGrid 
+						styleClass="ui-panelgrid-blank" columns="2"
+						cellpadding="2" layout="grid"
+						columnClasses="ui-grid-col-3 bu-texto,ui-grid-col-4">
+					
+					<p:outputLabel value="#{label.texto_empresa_usuario}"/>
+					
+					<p:commandButton 
+						icon="fa fa-plus" process="@this" update="@none"
+						styleClass="botaoAzul" 
+						action="#{dialogEmpresaBean.abrirDialog()}"
+						disabled="#{usuarioBean.visualizando}">
+						
+						<p:ajax event="dialogReturn" 
+							listener="#{usuarioBean.empresaSelecionada}" 
+							process="@this" update="tblEmpresas" />
+					</p:commandButton>
+					
+				</p:panelGrid>
+				
+				
+				<p:dataTable 
+					var="empresa" 
+					value="#{usuarioBean.entidade.empresas}" 
+					id="tblEmpresas" style="width: 70%">
+					
+	                <p:column headerText="#{label.codigo}" style="width: 15%">
+	                    <h:outputText value="#{empresa.codigo}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.nome}" style="width: 40%">
+	                    <h:outputText value="#{empresa.nomeRazao}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.documento}" style="width: 30%">
+	                    <h:outputText value="#{empresa.documentoFormatado}" />
+	                </p:column>
+	 
+	                <p:column headerText="#{label.acoes}" style="width:15%;">						
+					
+						<p:commandButton actionListener="#{usuarioBean.excluirEmpresa(empresa)}" 
+							styleClass="excluirBotao" icon="ui-icon-trash" process="@this"	
+							 
+							update="tblEmpresas" disabled="#{usuarioBean.visualizando}">
+							
+							<p:confirm header="#{label.confirmacao}" 
+								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
+							
+						</p:commandButton>						
+					</p:column>					                
+	            </p:dataTable>		
+	           
+			</p:tab>
+
+		</p:tabView>
+		
+		
+		<app:barraBotoes bean="#{usuarioBean}"/>
+		
+		
+		<p:dialog 
+			width="300" height="140"
+			header="Filtrar Tabela!"			
+			widgetVar="dialogFiltro" modal="true" draggable="true" 
+			closable="true" resizable="true" position="center center"
+			showEffect="explode" hideEffect="explode">
+		
+			<p:panelGrid columns="1" cellpadding="3" 
+				styleClass="ui-panelgrid-blank">
+														
+				<p:selectOneMenu id="tipoFiltro"
+					value="#{usuarioBean.filtro}" style="width:75%">						
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{usuarioBean.tipoFiltros()}" var="a"
+						itemValue="#{a}" itemLabel="#{a.label}"/>						
+				</p:selectOneMenu>
+					
+				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
+						value="#{usuarioBean.valorFiltro}"
+						size="30"/>
+								
+				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+					styleClass="bu-botao-azul" update="tabela"
+					style="margin-top:20px;"
+					actionListener="#{usuarioBean.filtrar()}"
+					onclick="PF('dialogFiltro').hide();" />	
+					
+			</p:panelGrid>	
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

@@ -22,6 +22,8 @@ public class IndexBean implements Serializable {
 	private String localeCode;
 	private static Map<String, Locale> countries;
 	
+	
+	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
 		countries.put("English", new Locale("en"));

@@ -18,13 +18,17 @@ import javax.persistence.Table;
 @Table(name="CHAMADO_ANEXO")
 public class ChamadoAnexo implements Serializable {
 
-	
+	private static final long serialVersionUID = -7361524004280774623L;
+
+
 	@Id
     @SequenceGenerator(name="G_CHAMADO_ANEXO", sequenceName="\"G_CHAMADO_ANEXO\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO_ANEXO")
     @Column(name = "COD_CHAMADOANEXO")
     private Integer idChamadoAnexo;
 	
+	@Column(name="NOME")
+	private String nome;
 	
 	
 	@Lob
@@ -35,7 +39,11 @@ public class ChamadoAnexo implements Serializable {
 	@Column(name="EXTENSAO", length =5)
 	private String extensao;
 
-
+	
+	@Column(name="TAMANHO")
+	private long tamanho;
+	
+	
 	@ManyToOne
     @JoinColumn(name ="COD_CHAMADO")
     private Chamado chamado;
@@ -72,8 +80,24 @@ public class ChamadoAnexo implements Serializable {
 		this.extensao = extensao;
 	}
 
-	
-	
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+
+	public long getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(long tamanho) {
+		this.tamanho = tamanho;
+	}
+
 
 	public Chamado getChamado() {
 		return chamado;

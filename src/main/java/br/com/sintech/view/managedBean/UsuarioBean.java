@@ -1,9 +1,10 @@
 package br.com.sintech.view.managedBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.SelectEvent;
 
@@ -13,10 +14,11 @@ import br.com.sintech.core.entity.Usuario;
 import br.com.sintech.core.service.ServiceUsuario;
 import br.com.sintech.view.util.UtilMensagens;
 
-
 @ManagedBean
-@SessionScoped
-public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
+@ViewScoped
+public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario>implements Serializable{
+
+	private static final long serialVersionUID = -3175517834044022637L;
 
 	public enum TipoFiltro{
 		CODIGO("Código"), 
@@ -57,7 +59,6 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 		return new Usuario();
 	}
 	
-
 	
 	public void excluirEmpresa(Empresa empresa){
 		if(this.entidade.getEmpresas().contains(empresa)){
@@ -116,5 +117,10 @@ public class UsuarioBean extends GenericBean<Usuario, ServiceUsuario> {
 	public TipoFiltro[] tipoFiltros(){
 		return TipoFiltro.values();
 	}
-		
+
+	@Override
+	public List<Usuario> getEntidades() {
+		return super.getEntidades();
+	}
+	
 }

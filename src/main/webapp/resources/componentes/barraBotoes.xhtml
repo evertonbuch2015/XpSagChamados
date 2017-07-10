@@ -21,10 +21,15 @@
 			styleClass="bu-botao-azul"
 			rendered="#{cc.attrs.bean.visualizando or cc.attrs.bean.buscando}"
 			actionListener="#{cc.attrs.bean.novo()}" />
+			
+		<p:commandButton value="#{label.visualizar}" update="@form" style="width:80px"
+			styleClass="bu-botao-azul" title="#{label.visualizar_item_selecionado}"
+			rendered="#{cc.attrs.bean.buscando}"
+			actionListener="#{cc.attrs.bean.visualizar()}" />
 
 		<p:commandButton value="#{label.atualizar}"  style="width:80px"
 			styleClass="bu-botao-verde" update="tabela"
-			rendered="#{cc.attrs.bean.buscando}"
+			rendered="#{cc.attrs.bean.buscando}" title="#{label.atualizar_registros_lista}"
 			actionListener="#{cc.attrs.bean.refresh()}" />
 
 		<p:commandButton value="#{label.editar}" update="@form" style="width:80px"

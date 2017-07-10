@@ -26,8 +26,7 @@ public class Constantes {
 		}
 		return instance;		
 	}
-	
-	
+		
 	
 	public void refresh(){
 		try {
@@ -39,7 +38,7 @@ public class Constantes {
 	}
 	
 	
-	public List<Empresa> getEmpresas(){
+	public List<Empresa> getEmpresas(){		
 		return listaEmpresas;
 	}
 	

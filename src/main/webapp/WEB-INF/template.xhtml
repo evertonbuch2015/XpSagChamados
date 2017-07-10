@@ -52,11 +52,13 @@
 				
 			        <p:submenu label="#{label.menu_cadastro}">
 			            <p:menuitem value="#{label.menu_usuario}" 
-			            	url="/cadUsuario.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
+			            	url="/usuarios.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
 			            
 			            <p:menuitem value="#{label.menu_empresas}"
-			            	url="/cadEmpresas.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
+			            	url="/empresas.xhtml?faces-redirect=true"		icon="fa fa-building-o" />			            
 			            
+			            <p:menuitem value="#{label.menu_programas}"
+			            	url="/programas.xhtml?faces-redirect=true"		icon="fa fa-building-o" />		
 			        </p:submenu>
 			        			         		      
 			        		
@@ -84,13 +86,13 @@
 				<ui:insert name="conteudo"/>						
 				
 				<p:confirmDialog global="true">
-					<p:commandButton value="#{label.txt_sim}" type="button" icon="ui-icon-check" styleClass="ui-confirmdialog-yes"/>
-					<p:commandButton value="#{label.txt_nao}" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"/>
+					<p:commandButton value="#{label.sim}" type="button" icon="ui-icon-check" styleClass="ui-confirmdialog-yes"/>
+					<p:commandButton value="#{label.nao}" type="button" icon="ui-icon-close" styleClass="ui-confirmdialog-no"/>
 				</p:confirmDialog>
 				
 				<p:dialog 
 					width="300" height="140"
-					header="#{label.txt_titulo_idioma}"			
+					header="#{label.titulo_idioma}"			
 					widgetVar="dialogIdioma" modal="true" draggable="true" 
 					closable="true" resizable="true" position="center center"
 					showEffect="explode" hideEffect="explode">
@@ -98,7 +100,7 @@
 					<p:panelGrid columns="1" cellpadding="3" 
 						styleClass="ui-panelgrid-blank">
 																				
-						<p:outputLabel value="#{label.txt_selecione_idioma}: " /> 
+						<p:outputLabel value="#{label.selecione_idioma}: " /> 
 						<p:selectOneMenu value="#{indexBean.localeCode}" effect="fade">
 							<f:selectItems value="#{indexBean.countries}"/>
 							<f:ajax event="change" render="@all"

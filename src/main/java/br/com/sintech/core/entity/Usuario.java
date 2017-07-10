@@ -68,7 +68,7 @@ public class Usuario implements Serializable {
 
 	@Column(name = "EM_FERIAS")
 	private Character emFerias;
-	
+
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "SIS_USUARIO_EMPRESA", joinColumns = {
@@ -181,6 +181,15 @@ public class Usuario implements Serializable {
 
 	public void setFraseSecreta(String fraseSecreta) {
 		this.fraseSecreta = fraseSecreta;
+	}
+	
+	
+
+	public Boolean isAtivo() {
+		if (this.ativo == null)
+			return null;
+		
+		return ativo.equals('S') ? true : false;
 	}
 	
 	// -------------------------------- Métodos Auxiliares------------------------------//

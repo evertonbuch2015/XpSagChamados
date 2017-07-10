@@ -2,12 +2,15 @@ package br.com.sintech.core.entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +28,9 @@ import javax.persistence.TemporalType;
 @Table(name="CHAMADO")
 public class Chamado implements Serializable{
 
-	
+	private static final long serialVersionUID = 8028945669874224625L;
+
+
 	@Id
     @SequenceGenerator(name="G_CHAMADO", sequenceName="\"G_CHAMADO\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO")
@@ -55,11 +60,12 @@ public class Chamado implements Serializable{
 	private String descricao;
 	
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name="SITUACAO", insertable=false, updatable=false)
 	private SituacaoChamado situacao;
 	
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="COD_USUARIO")
 	private Usuario usuario;
 	
@@ -106,7 +112,7 @@ public class Chamado implements Serializable{
 	
 	public String getDataSolicitacaoFormatada() {
 		if(this.dataSolicitacao != null){
-			new SimpleDateFormat("dd/MM/yyyy").format(dataSolicitacao);
+			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataSolicitacao);
 		}
 		return "";
 	}
@@ -122,9 +128,9 @@ public class Chamado implements Serializable{
 	
 	public String getDataEncerramentoFormatada() {
 		if(this.dataEncerramento != null){
-			new SimpleDateFormat("dd/MM/yyyy").format(dataEncerramento);
+			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataEncerramento);
 		}
-		return "Em Aberto";
+		return "";
 	}
 	
 	public Date getDataEncerramento() {
@@ -191,6 +197,9 @@ public class Chamado implements Serializable{
 
 
 	public List<ChamadoMovimento> getMovimentos() {
+		if(movimentos == null){
+			movimentos = new ArrayList<ChamadoMovimento>();
+		}
 		return movimentos;
 	}
 
@@ -200,6 +209,9 @@ public class Chamado implements Serializable{
 
 
 	public List<ChamadoAnexo> getAnexos() {
+		if(anexos == null){
+			anexos = new ArrayList<ChamadoAnexo>();
+		}
 		return anexos;
 	}
 

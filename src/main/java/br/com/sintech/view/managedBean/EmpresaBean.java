@@ -1,5 +1,6 @@
 package br.com.sintech.view.managedBean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +16,10 @@ import br.com.sintech.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
-public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa> {
+public class EmpresaBean extends GenericBean<Empresa, ServiceEmpresa>implements Serializable {
 	
+	private static final long serialVersionUID = -5293574908725828017L;
+
 	public enum TipoFiltro{
 		CODIGO("Código"), NOME("Nome");
 		

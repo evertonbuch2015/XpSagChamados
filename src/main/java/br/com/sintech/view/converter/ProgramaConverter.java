@@ -12,7 +12,8 @@ public class ProgramaConverter implements Converter {
     
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value) {
         if (value != null && !value.isEmpty()) {
-            return (Programa) uiComponent.getAttributes().get(value);
+             Programa programa = (Programa) uiComponent.getAttributes().get(value);
+             return programa;
         }
         return null;
     }
@@ -23,7 +24,7 @@ public class ProgramaConverter implements Converter {
         	Programa entity = (Programa) value;
             if (entity != null && entity instanceof Programa && entity.getIdPrograma() != null) {
                 uiComponent.getAttributes().put( entity.getIdPrograma().toString(), entity);
-                return entity.toString();
+                return entity.getIdPrograma().toString();
             }
         }
         return "";

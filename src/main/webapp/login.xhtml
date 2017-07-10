@@ -41,10 +41,25 @@
 					required="true"
 					requiredMessage="Informe a Senha!" 
 					placeholder="#{label.senha}" type="password"/>
-				
-													
+					
 				<p:commandButton value="#{label.login}"
-					action="#{loginBean.efetuaLogin()}" icon="fa fa-user"/>
+					update="@form" rendered="#{!loginBean.selecionandoHotel}" 
+					actionListener="#{loginBean.efetuaLogin()}"/>
+					
+				<p:selectOneMenu value="#{loginBean.empresa}"  id="hotel"
+					required="true" 
+					requiredMessage="Informe a Empresa!"
+					rendered="#{loginBean.selecionandoHotel}"
+					style="margin-bottom: 15px !important; width: 80%"  
+					autoWidth="false">
+								
+					<f:selectItems value="#{loginBean.empresas}" var="hotel"
+						 itemValue="#{emp}" itemLabel="#{emp.nomeFantasia}"/>
+				</p:selectOneMenu>	
+								
+				<p:commandButton value="#{label.proseguir}"
+					update="@form" rendered="#{loginBean.selecionandoHotel}"
+					action="#{loginBean.prosseguir()}"/>
 				
 			</div>
 			

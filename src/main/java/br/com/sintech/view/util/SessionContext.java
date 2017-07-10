@@ -4,6 +4,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.entity.Usuario;
 
 
@@ -73,5 +74,13 @@ public class SessionContext {
     			 (Usuario) currentExternalContext().getSessionMap().get("usuarioLogado");
     	 
     	 return usuarioLogado;
+     }
+     
+     
+     public Empresa getEmpresaUsuarioLogado(){
+    	 Empresa empresaUsuarioLogado = 
+    			 (Empresa) currentExternalContext().getSessionMap().get("empresaUsuarioLogado");
+    	 
+    	 return empresaUsuarioLogado;
      }
 }

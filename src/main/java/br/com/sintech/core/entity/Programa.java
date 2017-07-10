@@ -18,7 +18,9 @@ import javax.persistence.Table;
 @Table(name="CAD_PROGRAMA")
 public class Programa implements Serializable{
 
-	
+	private static final long serialVersionUID = 4264765383244512511L;
+
+
 	@Id
     @SequenceGenerator(name="G_CAD_PROGRAMA", sequenceName="\"G_CAD_PROGRAMA\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_PROGRAMA")
@@ -122,5 +124,8 @@ public class Programa implements Serializable{
 	}
 	
 	
-	
+	@Override
+	public String toString() {	
+		return nome + "  /  " + programa;
+	}
 }

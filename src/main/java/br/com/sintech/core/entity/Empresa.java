@@ -25,10 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="CAD_EMPRESA")
 public class Empresa implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4732933043750247762L;
+	private static final long serialVersionUID = -5693542061510108613L;
+
 
 	@Id
     @SequenceGenerator(name="G_CAD_EMPRESA", sequenceName="\"G_CAD_EMPRESA\"", allocationSize=1)  
@@ -272,9 +270,8 @@ public class Empresa implements Serializable {
 	}
 
 	
-	
 	//--------------------------------	Métodos Auxiliares------------------------------//
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -283,6 +280,7 @@ public class Empresa implements Serializable {
 		return result;
 	}
 
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -299,5 +297,11 @@ public class Empresa implements Serializable {
 		} else if (!idEmpresa.equals(other.idEmpresa))
 			return false;
 		return true;
-	}	
+	}
+	
+	@Override
+    public String toString() {
+        return codigo + " - " + nomeFantasia;
+    }
+	
 }

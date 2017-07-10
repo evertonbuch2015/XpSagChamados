@@ -7,6 +7,7 @@ import br.com.sintech.core.dao.ProgramaDao;
 import br.com.sintech.core.entity.Programa;
 import br.com.sintech.core.util.NegocioException;
 import br.com.sintech.core.util.PersistenciaException;
+import br.com.sintech.core.util.UtilErros;
 
 public class ServicePrograma implements GenericService<Programa> {
 
@@ -20,22 +21,57 @@ public class ServicePrograma implements GenericService<Programa> {
 	
 	@Override
 	public String salvar(Programa entidate) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (entidate.getIdPrograma() == null) {
+			
+			try {
+				dao.save(entidate);
+				return "Cadastro de Programa Realizado com Sucesso";
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new PersistenciaException("Ocorreu uma exceção ao inserir o Programa!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}
+			
+		} else {
+			
+			try {
+				dao.update(entidate);
+				return "Cadastro de Programa Alterado com Sucesso";
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new PersistenciaException("Ocorreu uma exceção ao alterar o Programa!" + 
+	            		" \nErro: " + UtilErros.getMensagemErro(e));
+			}			
+		}
 	}
 
+	
 	@Override
 	public String excluir(Programa entidade) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			dao.delete(entidade);
+			return "Programa removido com Sucesso!";
+        }catch (Exception ex) {
+        	ex.printStackTrace();            
+        	throw new PersistenciaException("Ocorreu uma exceção ao Remover o Programa!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(ex));
+		}
 	}
 
+	
 	@Override
 	public Programa carregarEntidade(Programa entidade) throws PersistenciaException {
-		// TODO Auto-generated method stub
-		return null;
+		String jpql = "Select e From Programa e where e.idPrograma = ?1";
+		try {
+			return dao.findOne(jpql, entidade.getIdPrograma());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao buscar os dados do Programa!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));		
+		}
 	}
 
+	
 	@Override
 	public List<Programa> buscarTodos() throws PersistenciaException {
 		
@@ -46,6 +82,7 @@ public class ServicePrograma implements GenericService<Programa> {
 		}
 	}
 
+	
 	@Override
 	public void consisteAntesEditar(Programa entidade) throws NegocioException {
 		// TODO Auto-generated method stub

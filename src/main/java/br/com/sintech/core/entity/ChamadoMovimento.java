@@ -1,6 +1,7 @@
 package br.com.sintech.core.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,7 +24,9 @@ import javax.persistence.TemporalType;
 @Table(name="CHAMADO_MOVIMENTO")
 public class ChamadoMovimento implements Serializable{
 
-	
+	private static final long serialVersionUID = -2903040050221826268L;
+
+
 	@Id
     @SequenceGenerator(name="G_CHAMADO_MOVIMENTO", sequenceName="\"G_CHAMADO_MOVIMENTO\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO_MOVIMENTO")
@@ -35,7 +38,7 @@ public class ChamadoMovimento implements Serializable{
 	@Column(name="DATA")
 	private Date data;
 	
-	
+
 	@Column(name="DESCRICAO")
 	private String descricao;
 	
@@ -46,9 +49,8 @@ public class ChamadoMovimento implements Serializable{
 	
 	
 	@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name ="COD_USUARIO_RESPONSAVEL")
+    @JoinColumn(name ="COD_USUARIORESPONSAVEL")
 	private Usuario responsavel;
-	
 	
 	
 	@ManyToOne
@@ -62,73 +64,61 @@ public class ChamadoMovimento implements Serializable{
 		return idChamadoMovimento;
 	}
 
-
-
 	public void setIdChamadoMovimento(Integer idChamadoMovimento) {
 		this.idChamadoMovimento = idChamadoMovimento;
 	}
 
 
+	public String getDataFormatada() {
+		if(this.data != null){
+			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(data);
+		}
+		return "";
+	}
 
 	public Date getData() {
 		return data;
 	}
-
-
 
 	public void setData(Date data) {
 		this.data = data;
 	}
 
 
-
 	public String getDescricao() {
 		return descricao;
 	}
-
-
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
 
-
 	public SituacaoChamado getSituacao() {
 		return situacao;
 	}
-
-
 
 	public void setSituacao(SituacaoChamado situacao) {
 		this.situacao = situacao;
 	}
 
 
-
 	public Usuario getResponsavel() {
 		return responsavel;
 	}
-
-
 
 	public void setResponsavel(Usuario responsavel) {
 		this.responsavel = responsavel;
 	}
 
 
-
 	public Chamado getChamado() {
 		return chamado;
 	}
 
-
-
 	public void setChamado(Chamado chamado) {
 		this.chamado = chamado;
 	}
-
-
 
 	//--------------------------------	Métodos Auxiliares------------------------------//
 	
@@ -139,8 +129,6 @@ public class ChamadoMovimento implements Serializable{
 		result = prime * result + ((idChamadoMovimento == null) ? 0 : idChamadoMovimento.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {

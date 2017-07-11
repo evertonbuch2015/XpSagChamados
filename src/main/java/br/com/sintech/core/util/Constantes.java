@@ -48,7 +48,6 @@ public class Constantes {
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -63,19 +62,25 @@ public class Constantes {
 		return listaProgramas;
 	}
 	
+	
 	public Parametro getParametro() {
 		return parametro;
 	}
 
-
 	
 	public void addUsuarioLogado(Usuario usuario){
-		this.usuariosLogados.add(usuario);		
+		if(!this.usuariosLogados.contains(usuario)){
+			this.usuariosLogados.add(usuario);
+		}
 	}
 	
+	
 	public void removeUsuarioLogado(Usuario usuario){
-		this.usuariosLogados.remove(usuario);		
+		if(this.usuariosLogados.contains(usuario)){
+			this.usuariosLogados.remove(usuario);
+		}
 	}
+	
 	
 	public List<Usuario> getUsuariosLogados() {
 		return usuariosLogados;

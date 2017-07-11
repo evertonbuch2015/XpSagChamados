@@ -50,7 +50,7 @@ public class LoginBean implements Serializable{
 			
 			
 			SessionContext.getInstance().setAttribute("usuarioLogado", this.usuario);
-	        Constantes.getInstance().addUsuarioLogado(usuario);			
+	        Constantes.getInstance().addUsuarioLogado(usuario);
 			
 			if(usuario.getGrupoUsuario() == GrupoUsuario.ADMIN){
 				try {

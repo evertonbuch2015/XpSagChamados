@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.sintech.core.entity.MenuSistema;
 import br.com.sintech.core.entity.Programa;
@@ -13,7 +13,7 @@ import br.com.sintech.view.util.UtilMensagens;
 
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ProgramaBean extends GenericBean<Programa, ServicePrograma>implements Serializable {
 	
 	private static final long serialVersionUID = -5293574908725828017L;

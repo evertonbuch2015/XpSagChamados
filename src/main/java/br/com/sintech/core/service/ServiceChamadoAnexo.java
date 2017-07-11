@@ -1,38 +1,47 @@
-package br.com.sintech.view.util;
+package br.com.sintech.core.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
+import br.com.sintech.core.dao.ChamadoAnexoDao;
 import br.com.sintech.core.entity.ChamadoAnexo;
+import br.com.sintech.core.util.PersistenciaException;
 
-public class UploadArquivo {
+public class ServiceChamadoAnexo {
+
+	private ChamadoAnexoDao dao;
 	
-	public UploadArquivo() {
-	
+	public ServiceChamadoAnexo() {
+		dao = new ChamadoAnexoDao();
 	}
-
 	
-	public void gravar(ChamadoAnexo anexo) {		
-		try {						
-			if(!new File(anexo.getCaminho() + anexo.getNome()).exists()){
-			
-				File file = new File(anexo.getCaminho());			
-				file.mkdirs();
-				
-				FileOutputStream fos;
-				fos = new FileOutputStream(anexo.getCaminho() + anexo.getNome());
-				fos.write(anexo.getArquivo());
-				fos.close();
-			}
-		} catch (Exception ex) {
-			System.out.println(ex);
+	
+
+	public static void gravar(ChamadoAnexo anexo) throws Exception {
+		if (!new File(anexo.getCaminho() + anexo.getNome()).exists()) {
+
+			File file = new File(anexo.getCaminho());
+			file.mkdirs();
+
+			FileOutputStream fos;
+			fos = new FileOutputStream(anexo.getCaminho() + anexo.getNome());
+			fos.write(anexo.getArquivo());
+			fos.close();
+		}
+
+	}
+	
+	
+	
+	public ChamadoAnexo carregarEntidade(ChamadoAnexo entidade) throws PersistenciaException {
+		try {
+			return dao.findAllAtributos(entidade);
+		} catch (Exception e) {
+			return null;
 		}
 	}
+	
 }
-
-
-
-
 
 
 

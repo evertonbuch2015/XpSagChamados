@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
@@ -25,6 +26,7 @@ import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.Programa;
 import br.com.sintech.core.entity.SituacaoChamado;
 import br.com.sintech.core.service.ServiceChamado;
+import br.com.sintech.core.service.ServiceChamadoAnexo;
 import br.com.sintech.core.util.Constantes;
 import br.com.sintech.view.util.SessionContext;
 import br.com.sintech.view.util.UtilMensagens;
@@ -58,7 +60,6 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 	private Date dataFiltro;
 	private String nomeProgramaTela;
 	private StreamedContent file;
-	
 	
 	public ChamadoBean() {
 		super(new ServiceChamado());
@@ -124,7 +125,18 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 			
 			this.file = new DefaultStreamedContent(stream, anexo.getContentType(), anexo.getNome());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			
+			try {
+				//grava o arquivo antes de chamar novamente o doDownload
+				ChamadoAnexo anexoAux = new ServiceChamadoAnexo().carregarEntidade(anexo); 
+				
+				ServiceChamadoAnexo.gravar(anexoAux);
+				doDownload(anexoAux);
+				anexoAux = null;
+			} catch (Exception e1) {
+				InputStream streamAux = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/images/pdf.png");
+		        file = new DefaultStreamedContent(streamAux, "image/jpg", "downloaded_pdf.png");
+			}
 		}        
 	}
 	

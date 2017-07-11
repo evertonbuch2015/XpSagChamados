@@ -1,5 +1,6 @@
 package br.com.sintech.view.util;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -20,7 +21,7 @@ public class Autorizador implements PhaseListener {
 		FacesContext context = event.getFacesContext();
 		String nomePagina = context.getViewRoot().getViewId();
 
-		if ("/Login.xhtml".equals(nomePagina)) {
+		if ("/login.xhtml".equals(nomePagina)) {
 			return;
 		}
 
@@ -28,16 +29,19 @@ public class Autorizador implements PhaseListener {
 				.getSessionMap().get("usuarioLogado");
 		
 		
-		if(usuarioLogado == null) {
+		/*if(usuarioLogado == null) {
 			return;
-		}
+		}*/
 		
 		if(usuarioLogado != null) {
 			return;
 		}
 		
 		NavigationHandler handler = context.getApplication().getNavigationHandler();
-		handler.handleNavigation(context, null, "/Login");
+		handler.handleNavigation(context, null, "/login");
+		
+		FacesMessage message =  new FacesMessage(FacesMessage.SEVERITY_INFO,"Sessão Expirada. Faça Login novamente!","");
+		context.addMessage(null, message);
 		
 		context.renderResponse();
 		

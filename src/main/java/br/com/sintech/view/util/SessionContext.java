@@ -47,6 +47,8 @@ public class SessionContext {
      
      public void encerrarSessao(){        
         ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession().invalidate();
+        deleteAttribute("usuarioLogado");
+        deleteAttribute("empresaUsuarioLogado");
      }
      
      

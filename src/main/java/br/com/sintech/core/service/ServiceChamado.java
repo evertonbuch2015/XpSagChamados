@@ -17,7 +17,6 @@ import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.core.util.UtilErros;
 import br.com.sintech.view.managedBean.ChamadoBean.TipoFiltro;
 import br.com.sintech.view.util.SessionContext;
-import br.com.sintech.view.util.UploadArquivo;
 
 public class ServiceChamado implements GenericService<Chamado> {
 
@@ -57,10 +56,9 @@ public class ServiceChamado implements GenericService<Chamado> {
 				}				
 				
 				dao.save(entidade);				
-				
-				UploadArquivo uploadArquivo = new UploadArquivo();
+								
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {										
-					uploadArquivo.gravar(anexo);
+					ServiceChamadoAnexo.gravar(anexo);
 				}
 				
 				return "Cadastro de Chamado Realizado com Sucesso";
@@ -83,9 +81,8 @@ public class ServiceChamado implements GenericService<Chamado> {
 				
 				dao.update(entidade);				
 				
-				UploadArquivo uploadArquivo = new UploadArquivo();
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {										
-					uploadArquivo.gravar(anexo);
+					ServiceChamadoAnexo.gravar(anexo);
 				}
 								
 				
@@ -161,8 +158,7 @@ public class ServiceChamado implements GenericService<Chamado> {
 	
 	@Override
 	public void consisteAntesEditar(Chamado entidade) throws NegocioException {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	

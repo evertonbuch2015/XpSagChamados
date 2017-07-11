@@ -80,6 +80,19 @@ public class ChamadoAnexo implements Serializable {
 
 
 
+	public ChamadoAnexo(Integer idChamadoAnexo, String nome, String caminho, String extensao, Integer tamanho,
+			byte[] arquivo, Chamado chamado, String contentType) {
+		this.idChamadoAnexo = idChamadoAnexo;
+		this.nome = nome;
+		this.caminho = caminho;
+		this.extensao = extensao;
+		this.tamanho = tamanho;
+		this.arquivo = arquivo;
+		this.chamado = chamado;
+		this.contentType = contentType;
+	}
+
+
 
 	//-------------------------------	GETs and SETs------------------------------//
 	

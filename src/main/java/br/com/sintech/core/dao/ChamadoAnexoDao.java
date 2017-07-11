@@ -40,4 +40,32 @@ public class ChamadoAnexoDao extends GenericDao<ChamadoAnexo> {
 	            
         return entities; 
 	}
+	
+	
+	public ChamadoAnexo findAllAtributos(ChamadoAnexo chamadoAnexo)throws Exception{
+		EntityManager em = getEntityManager();
+        em.getTransaction().begin();        
+        
+        Query query = em.createQuery("Select new br.com.sintech.core.entity.ChamadoAnexo("
+        		+ " a.idChamadoAnexo, a.nome, a.caminho, a.extensao, "
+        		+ " a.tamanho, a.arquivo, a.chamado, a.contentType) "
+        		+ " From ChamadoAnexo a where a.idChamadoAnexo = ?1");
+        query.setParameter(1, chamadoAnexo.getIdChamadoAnexo());
+        
+        
+        ChamadoAnexo entity = null;
+        try {
+        	entity = (ChamadoAnexo) query.getSingleResult();        	
+        	em.getTransaction().commit();
+        	
+		} catch (Exception e) {
+			e.printStackTrace();
+			doRollback(em);  
+			throw e;
+		}finally{
+			em.close();
+		}
+	            
+        return entity; 
+	}
 }

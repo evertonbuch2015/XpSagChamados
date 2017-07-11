@@ -205,21 +205,21 @@
 					emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px 0px 20px 0px;">									
 					
-					<p:column headerText="#{label.nome}" width="90">
+					<p:column headerText="#{label.nome}" >
 						<h:outputText value="#{anexo.nome}" />
 					</p:column>
 
-					<p:column headerText="#{label.extensao}" width="130">
+					<p:column headerText="#{label.extensao}" width="120">
 						<h:outputText value="#{anexo.extensao}" />
 					</p:column>
 					
-					<p:column headerText="#{label.tamanho}" width="180">
+					<p:column headerText="#{label.tamanho}" width="120">
 						<h:outputText value="#{anexo.tamanhoFormatado}" />
 					</p:column>	
 					
-					<p:column headerText="#{label.acoes}" width="110">						
+					<p:column headerText="#{label.acoes}" width="120">						
 						<p:commandButton actionListener="#{chamadoBean.doDownload(anexo)}" 
-							icon="fa fa-download" update="@this"
+							icon="fa fa-download" update="@this" title="#{label.texto_fazer_download}"
 							ajax="false">
 							
 							<p:fileDownload value="#{chamadoBean.file}" />

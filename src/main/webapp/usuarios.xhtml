@@ -139,7 +139,8 @@
 						<p:outputLabel value="#{label.setor}" for="setor" />
 						<p:selectOneMenu id="setor" 
 							value="#{usuarioBean.entidade.setor}" 
-							editable="true" autoWidth="false"> 
+							editable="true" autoWidth="false"
+							disabled="#{usuarioBean.visualizando}"> 
 							<f:selectItems value="#{usuarioBean.setores}" />
 						</p:selectOneMenu>
 											
@@ -148,7 +149,8 @@
 						<p:selectOneMenu id="grupo"
 							value="#{usuarioBean.entidade.grupoUsuario}"
 							required="true"
-							requiredMessage="Informe o Grupo de Acesso"> 
+							requiredMessage="Informe o Grupo de Acesso"
+							disabled="#{usuarioBean.visualizando}"> 
 							<f:selectItems value="#{usuarioBean.grupoUsuarios}" />
 						</p:selectOneMenu>
 						

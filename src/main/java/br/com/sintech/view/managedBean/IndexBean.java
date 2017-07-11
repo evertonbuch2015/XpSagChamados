@@ -11,6 +11,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import br.com.sintech.core.entity.Usuario;
+import br.com.sintech.core.util.Constantes;
 import br.com.sintech.view.util.SessionContext;
 
 
@@ -21,8 +23,6 @@ public class IndexBean implements Serializable {
 	private static final long serialVersionUID = 201405150723L;
 	private String localeCode;
 	private static Map<String, Locale> countries;
-	
-	
 	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
@@ -48,8 +48,13 @@ public class IndexBean implements Serializable {
 	
 	
 	public String deslogar() {
+		Usuario u = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+        if (u != null) {
+             Constantes.getInstance().removeUsuarioLogado(u);
+        }
+		
 		SessionContext.getInstance().deleteAttribute("usuarioLogado");
-		SessionContext.getInstance().deleteAttribute("hotel");
+		SessionContext.getInstance().deleteAttribute("empresaUsuarioLogado");
 	    SessionContext.getInstance().encerrarSessao();
 	    
 	    return "/login?faces-redirect=true";
@@ -73,5 +78,10 @@ public class IndexBean implements Serializable {
 
 	public void setLocaleCode(String localeCode) {
 		this.localeCode = localeCode;
+	}
+
+
+	public Usuario getUsuarioLogado(){
+		return SessionContext.getInstance().getUsuarioLogado();
 	}
 }

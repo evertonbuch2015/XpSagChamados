@@ -3,6 +3,7 @@ package br.com.sintech.view.util;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.entity.Usuario;
@@ -27,7 +28,7 @@ public class SessionContext {
      
      private ExternalContext currentExternalContext(){
         if (FacesContext.getCurrentInstance() == null){
-            throw new RuntimeException("O FacesContext n�o pode ser chamado fora de uma requisi��o HTTP");
+            throw new RuntimeException("O FacesContext não pode ser chamado fora de uma requisi��o HTTP");
         }else{
             return FacesContext.getCurrentInstance().getExternalContext();
         }
@@ -44,8 +45,8 @@ public class SessionContext {
       }    
      
      
-     public void encerrarSessao(){
-        currentExternalContext().invalidateSession();
+     public void encerrarSessao(){        
+        ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession().invalidate();
      }
      
      

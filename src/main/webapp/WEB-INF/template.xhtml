@@ -42,12 +42,14 @@
 		<header class="bu-topbar">
 			<h:graphicImage library="images" name="logo-sistema.png" />			
 			
+			
 			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
+			<p:outputLabel value="#{label.usuario} :  #{indexBean.usuarioLogado.nomeColaborador}" styleClass="bu-toggle"/>
 		</header>
 				
 				
 		<h:form prependId="false">		
-			<aside class="bu-sidebar js-sidebar">				
+			<aside class="bu-sidebar js-sidebar">
 				<p:panelMenu style="width:99%">
 				
 			        <p:submenu label="#{label.menu_cadastro}">			            

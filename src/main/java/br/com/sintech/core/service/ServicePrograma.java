@@ -8,6 +8,7 @@ import br.com.sintech.core.entity.Programa;
 import br.com.sintech.core.util.NegocioException;
 import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.core.util.UtilErros;
+import br.com.sintech.view.managedBean.ProgramaBean.TipoFiltro;
 
 public class ServicePrograma implements GenericService<Programa> {
 
@@ -85,8 +86,33 @@ public class ServicePrograma implements GenericService<Programa> {
 	
 	@Override
 	public void consisteAntesEditar(Programa entidade) throws NegocioException {
-		// TODO Auto-generated method stub
 		
+	}
+
+	
+	public List<Programa> filtrarTabela(TipoFiltro filtro, String valorFiltro) throws PersistenciaException{
+		List<Programa> lista = null;
+		
+		try {
+		
+			if(filtro.equals(TipoFiltro.CODIGO)){			
+				String jpql = "Select p From Programa p where p.idPrograma in (" + valorFiltro + ")";
+				lista = dao.find(jpql);				
+			}
+			else if(filtro.equals(TipoFiltro.NOME)){							
+				lista = dao.find("Select p From Programa p where p.nome like ?",valorFiltro);						
+			}
+			else if(filtro.equals(TipoFiltro.PROGRAMA)){							
+				lista = dao.find("Select p From Programa p where p.programa like ?",valorFiltro);						
+			}
+			
+			return lista;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException("Ocorreu uma exceção ao Filtrar os dados do Programa!" + 
+            		" \nErro: " + UtilErros.getMensagemErro(e));
+		}
 	}
 
 }

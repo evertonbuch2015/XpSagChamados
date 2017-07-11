@@ -12,6 +12,7 @@ import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.Usuario;
 import br.com.sintech.core.service.ServiceUsuario;
+import br.com.sintech.core.util.Constantes;
 import br.com.sintech.core.util.NegocioException;
 import br.com.sintech.view.util.SessionContext;
 import br.com.sintech.view.util.UtilMensagens;
@@ -47,7 +48,9 @@ public class LoginBean implements Serializable{
 			this.usuario.setNomeUsuario(login);
 			this.usuario = usuarioService.buscarPeloNome(this.usuario);			
 			
+			
 			SessionContext.getInstance().setAttribute("usuarioLogado", this.usuario);
+	        Constantes.getInstance().addUsuarioLogado(usuario);			
 			
 			if(usuario.getGrupoUsuario() == GrupoUsuario.ADMIN){
 				try {

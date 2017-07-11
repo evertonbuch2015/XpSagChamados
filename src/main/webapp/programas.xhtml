@@ -29,37 +29,56 @@
 		</p:messages>
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}" prependId="false">						
+		<p:tabView rendered="#{programaBean.buscando}" prependId="false">						
 			<p:tab title="Consulta"> 	
 				<p:dataTable id="tabela"
-					value="#{Trocar.entidades}" var="entidade" 
-					selection="#{Trocar.entidade}" selectionMode="single"
-					rowKey="#{entidade.}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;" 
-					rendered="#{Trocar.buscando}">				
+					value="#{programaBean.entidades}" var="entidade" 
+					selection="#{programaBean.entidade}" selectionMode="single"
+					rowKey="#{entidade.idPrograma}" reflow="true"									
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px 0px;" 
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
-					<p:ajax event="rowDblselect" listener="#{Trocar.onRowDblClckSelect}"
+					<p:ajax event="rowDblselect" listener="#{programaBean.onRowDblClckSelect}"
 						global="false" update="@form"/>
 
-					<p:ajax event="rowSelect" listener="#{Trocar.onRowSelect}" />
+					<p:ajax event="rowSelect" listener="#{programaBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.txt_codigo}" width="110">
-						<h:outputText value="#{entidade.codigo}" />
+					<p:column headerText="#{label.codigo}" width="110" >
+						<h:outputText value="#{entidade.idPrograma}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.menu}" width="160" 
+						style="text-align: left" sortBy="#{entidade.menu}">
+						<h:outputText value="#{entidade.menu.label}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.nome}"
+						style="text-align: left" sortBy="#{entidade.nome}">
+						<h:outputText value="#{entidade.nome}" />
+					</p:column>
+					
+					
+					<p:column headerText="#{label.programa}" width="260" 
+						style="text-align: left" sortBy="#{entidade.programa}">						
+						<h:outputText value="#{entidade.programa}" />
 					</p:column>
 					
 										
-					
-					<p:column headerText="#{label.txt_acoes}" exportable="false" width="110">						
-						<p:commandButton actionListener="#{Trocar.editar(entidade)}" 
+					<p:column headerText="#{label.acoes}" exportable="false" width="110">						
+						<p:commandButton actionListener="#{programaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
-						<p:commandButton actionListener="#{Trocar.excluir(entidade)}" 
+						<p:commandButton actionListener="#{programaBean.excluir(entidade)}" 
 							icon="ui-icon-trash" update="@form">
 							
-							<p:confirm header="#{label.txt_confirmacao}" 
+							<p:confirm header="#{label.confirmacao}" 
 								message="Deseja Excluir este Registro" icon="ui-icon-alert"/>
 						</p:commandButton>
 					</p:column>					
@@ -70,97 +89,98 @@
 		
 		
 		
-		<p:tabView rendered="#{Trocar.buscando}">					
-			<p:tab title="#{label.txt_dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
+		<p:tabView rendered="#{!programaBean.buscando}">					
+			<p:tab title="#{label.dados_gerais}" titleStyle="font-size: 10px;color: #455a64;">
 				<div class="ui-fluid">
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="4"
 						cellpadding="10" layout="grid"
 						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-4">
 
-						<p:outputLabel value="Nome:" for="nome" />
-						<p:inputText value="" placeholder="Ex: Steve Jobs"
-							id="nome" />
+
+						<p:outputLabel value="#{label.codigo}" for="codigo" />
+						<p:inputText id="codigo" 
+							value="#{programaBean.entidade.idPrograma}"
+							readonly="true" />
 						
-						<p:outputLabel value="Email:" for="email" />
-						<p:inputText value=""
-							placeholder="Ex: email@dominio.com.br" id="email" />
 						
-						<p:outputLabel value="Telefone:" for="tel1" />
-						<p:inputMask mask="(99)9999-9999"
-							placeholder="Ex: (21) 2616-0000 " id="tel1" />
-						
-						<p:outputLabel value="Celular:" for="tel2" />
-						<p:inputMask mask="(99)9.9999-9999"
-							placeholder="Ex: (21) 9.8781-0000" id="tel2" />
-						
-						<p:outputLabel value="Data Nasc.:" for="dtNasc" />
-						<p:inputMask mask="99/99/9999"
-							placeholder="Ex: 01/01/2000" id="dtNasc" />
-						
-						<p:outputLabel value="Como nos conheceu?" for="info" />
-						<p:selectOneMenu filter="true" id="info">
-							<f:selectItem itemValue="" itemLabel="Selecione uma mídia" />
-							<f:selectItem itemValue="" itemLabel="Indicação de amigos" />
-							<f:selectItem itemValue="" itemLabel="Internet" />
-							<f:selectItem itemValue="" itemLabel="Televisão" />
+						<p:outputLabel value="#{label.nome}" for="nome" />
+						<p:inputText id="nome" 
+							value="#{programaBean.entidade.nome}" placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o nome do Programa!"
+							readonly="#{programaBean.visualizando}"/>
+							
+							
+						<p:outputLabel value="#{label.programa}" for="programa" />
+						<p:inputText id="programa"
+							value="#{programaBean.entidade.programa}" placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe o Programa!"
+							readonly="#{programaBean.visualizando}"/>
+							
+							
+						<p:outputLabel value="#{label.versao}" for="versao" />
+						<p:inputText id="versao"
+							value="#{programaBean.entidade.versao}" placeholder="máximo 60 caracteres"
+							required="true" 
+							requiredMessage="Informe a versão do Programa!"
+							readonly="#{programaBean.visualizando}"/>
+							
+												
+						<p:outputLabel value="#{label.menu}" for="menu"/>
+						<p:selectOneMenu id="menu"
+							value="#{programaBean.entidade.menu}"
+							required="true" 
+							requiredMessage="Informe no endereço o estado!"
+							disabled="#{programaBean.visualizando}">
+							
+							<f:selectItem itemLabel="Selecione"/>
+							<f:selectItems value="#{programaBean.menusSistema}" var="a"
+								itemValue="#{a}" itemLabel="#{a.label}"/>
 						</p:selectOneMenu>
-
-					</p:panelGrid>
-					
-				</div>
-			</p:tab>
-
-
-			<p:tab title="Endereço">
-				<div class="ui-fluid">
-					
-					<p:panelGrid columns="4"
-						styleClass="ui-panelgrid-blank"
-						cellpadding="10" layout="grid"
-						columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-1,ui-grid-col-2">
+						
 						
 					</p:panelGrid>
 					
 				</div>
-			</p:tab>
-
-
-			<p:tab title="Observações">
-
 			</p:tab>
 
 		</p:tabView>
 		
 		
-		<app:barraBotoes bean="#{Trocar}"/>
+		<app:barraBotoes bean="#{programaBean}"/>
 		
 		
 		<p:dialog 
-			width="300" height="140"
-			header="Filtrar Tabela!"			
+			width="300" height="180"
+			header="#{label.filtrar_registros}"			
 			widgetVar="dialogFiltro" modal="true" draggable="true" 
-			closable="true" resizable="true" position="center center"
+			closable="true" resizable="fase" position="center center"
 			showEffect="explode" hideEffect="explode">
 		
-			<p:panelGrid columns="1" cellpadding="3" 
+			<p:panelGrid columns="1" cellpadding="2"
 				styleClass="ui-panelgrid-blank">
-														
+						
+				<p:outputLabel value="#{label.tipo_filtro}"/>								
 				<p:selectOneMenu id="tipoFiltro"
-					value="#{Trocar.filtro}" style="width:75%">						
+					value="#{programaBean.filtro}" style="width:75%">						
 					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{Trocar.tipoFiltros()}" var="a"
+					<f:selectItems value="#{programaBean.tipoFiltros()}" var="a"
 						itemValue="#{a}" itemLabel="#{a.label}"/>						
 				</p:selectOneMenu>
 					
-				<p:inputText id="valorfiltro" placeholder="Valor do Filtro!" 
-						value="#{Trocar.valorFiltro}"
+					
+				<p:outputLabel value="#{label.valor_filtro}"/>
+				<p:inputText id="valorfiltro" placeholder="#{label.valor_filtro}" 
+						value="#{programaBean.valorFiltro}"
 						size="30"/>
+					
 								
-				<p:commandButton value="Filtrar" icon="ui-icon-folder-collapsed"
+				<p:commandButton value="#{label.filtrar}" icon="ui-icon-folder-collapsed"
 					styleClass="bu-botao-azul" update="tabela"
 					style="margin-top:20px;"
-					actionListener="#{Trocar.filtrar()}"
+					actionListener="#{programaBean.filtrar()}"
 					onclick="PF('dialogFiltro').hide();" />	
 					
 			</p:panelGrid>	

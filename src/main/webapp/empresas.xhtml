@@ -107,32 +107,38 @@
 						<p:inputText id="codigo"
 							value="#{empresaBean.entidade.codigo}" placeholder="Código da Empresa"
 							required="true" 
-							requiredMessage="Informe o código da Empresa"/>
+							requiredMessage="Informe o código da Empresa"
+							readonly="#{empresaBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.nome_razao}:" for="nome_razao" />
 						<p:inputText id="nome_razao" 
 							value="#{empresaBean.entidade.nomeRazao}" placeholder="máximo 60 caracteres"
 							required="true" 
-							requiredMessage="Informe o nome razão do entidade!"/>
+							requiredMessage="Informe o nome razão do entidade!"
+							readonly="#{empresaBean.visualizando}"/>
+						
 						
 						<p:outputLabel value="#{label.nome_fantasia}:" for="nome_fantasia" />
 						<p:inputText id="nome_fantasia" 
 							value="#{empresaBean.entidade.nomeFantasia}" 
 							placeholder="máximo 60 caracteres"
 							required="true" 
-							requiredMessage="Informe o nome fantasia da Empresa"/>
+							requiredMessage="Informe o nome fantasia da Empresa"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.email}:" for="email" />
 						<p:inputText id="email"
 							value="#{empresaBean.entidade.email}" placeholder="Ex: email@dominio.com.br"
 							required="true" 
-							requiredMessage="Informe um e-mail de contato!"/>
+							requiredMessage="Informe um e-mail de contato!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						<p:outputLabel value="#{label.site}:" for="site" />
 						<p:inputText id="site"
-							value="#{empresaBean.entidade.site}" placeholder="Ex: www.dominio.com.br"/>
+							value="#{empresaBean.entidade.site}" placeholder="Ex: www.dominio.com.br"
+							readonly="#{empresaBean.visualizando}"/>
 							
 							
 						<p:outputLabel value="#{label.telefone}:" for="telefone1" />							
@@ -158,12 +164,15 @@
 						
 						<p:outputLabel value="#{label.insc_estadual}:" for="insc_estadual" />							
 						<p:inputMask id="insc_estadual"
-							value="#{empresaBean.entidade.inscEstadual}"/>
+							value="#{empresaBean.entidade.inscEstadual}"
+							readonly="#{empresaBean.visualizando}"/>
+							
 						
 						<p:outputLabel value="#{label.insc_municipal}:" for="insc_municipal" />							
 						<p:inputMask id="insc_municipal"
 							value="#{empresaBean.entidade.inscMunicipal}"
-							mask="999999999-9" placeholder="Ex: 999999999-9 "/>
+							mask="999999999-9" placeholder="Ex: 999999999-9 "
+							readonly="#{empresaBean.visualizando}"/>
 											
 											
 						<p:outputLabel value="#{label.data_cadastro}:" for="dtCadastro"/>
@@ -171,6 +180,7 @@
 							value="#{empresaBean.entidade.dataCadastroFormatada}" mask="99/99/9999"/>
 												
 					</p:panelGrid>
+					
 					
 					<p:panelGrid 
 						styleClass="ui-panelgrid-blank" columns="2"
@@ -181,7 +191,9 @@
 						<p:selectOneButton id="ativo"
 							value="#{empresaBean.entidade.ativo}"
 							styleClass="bu-selectOneButton"
-							style="	max-width: 65%;">
+							style="	max-width: 65%;"
+							disabled="#{empresaBean.visualizando}">
+							
             				<f:selectItem itemLabel="#{label.sim}" itemValue="S"/>
             				<f:selectItem itemLabel="#{label.nao}" itemValue="N"/>
         				</p:selectOneButton>
@@ -204,58 +216,73 @@
 						<p:inputMask id="cep" 
 							value="#{empresaBean.entidade.endereco.cep}" mask="99.999-999"
 							required="true" 
-							requiredMessage="Informe no endereço o número do Cep!"/>
+							requiredMessage="Informe no endereço o número do Cep!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 															
 						<p:outputLabel value="#{label.lgr}" for="lgr"/>
 						<p:inputText id="lgr"
 							value="#{empresaBean.entidade.endereco.logradouro}"
-							placeholder="Ex: Avenida"/>
+							placeholder="Ex: Avenida"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						<p:outputLabel value="#{label.rua}" for="rua"/>
 						<p:inputText id="rua"
 							value="#{empresaBean.entidade.endereco.rua}"
 							placeholder="Ex: Assis Brasil"
 							required="true" 
-							requiredMessage="Informe no endereço o nome da rua!"/>
+							requiredMessage="Informe no endereço o nome da rua!"
+							readonly="#{empresaBean.visualizando}"/>
+							
 							
 						<p:outputLabel value="#{label.numero}" for="numero"/>
 						<p:spinner id="numero" 
 							value="#{empresaBean.entidade.endereco.numero}" min="0"
 							required="true" 
-							requiredMessage="Informe no endereço o número!"/>
+							requiredMessage="Informe no endereço o número!"
+							readonly="#{empresaBean.visualizando}"/>
 						
 						
 						<p:outputLabel value="#{label.complemento}" for="complemento"/>
 						<p:inputText id="complemento"
-							value="#{empresaBean.entidade.endereco.complemento}"/>
+							value="#{empresaBean.entidade.endereco.complemento}"
+							readonly="#{empresaBean.visualizando}"/>
+							
 							
 						<p:outputLabel value="#{label.bairro}" for="bairro"/>
 						<p:inputText id="bairro"
 							value="#{empresaBean.entidade.endereco.bairro}"
 							required="true" 
-							requiredMessage="Informe no endereço o bairro!"/>
+							requiredMessage="Informe no endereço o bairro!"
+							readonly="#{empresaBean.visualizando}"/>
+							
 							
 						<p:outputLabel value="#{label.cidade}" for="cidade"/>
 						<p:inputText id="cidade"
 							value="#{empresaBean.entidade.endereco.cidade}"
 							required="true" 
-							requiredMessage="Informe no endereço o nome da Cidade!"/>
+							requiredMessage="Informe no endereço o nome da Cidade!"
+							readonly="#{empresaBean.visualizando}"/>
+							
 							
 						<p:outputLabel value="#{label.estado}" for="estado"/>
 						<p:selectOneMenu id="estado"
 							value="#{empresaBean.entidade.endereco.estado}"
 							required="true" 
-							requiredMessage="Informe no endereço o estado!">
+							requiredMessage="Informe no endereço o estado!"
+							disabled="#{empresaBean.visualizando}">
 							
 							<f:selectItem itemLabel="Selecione"/>
 							<f:selectItems value="#{empresaBean.estados}" var="a"
 								itemValue="#{a}" itemLabel="#{a}"/>
 						</p:selectOneMenu>
 						
+						
 						<p:outputLabel value="#{label.pais}" for="pais"/>
 						<p:inputText id="pais"
-							value="#{empresaBean.entidade.endereco.pais}"/>
+							value="#{empresaBean.entidade.endereco.pais}"
+							readonly="#{empresaBean.visualizando}"/>
+							
 					</p:panelGrid>
 				</div>
 			</p:tab>

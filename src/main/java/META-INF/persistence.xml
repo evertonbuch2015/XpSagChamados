@@ -9,10 +9,10 @@
 		<class>br.com.sintech.core.entity.ChamadoMovimento</class>
 		<class>br.com.sintech.core.entity.ChamadoAnexo</class>
 		<class>br.com.sintech.core.entity.Programa</class>
-		<class>br.com.sintech.core.entity.Parametro</class>
+		<class>br.com.sintech.core.entity.SituacaoChamado</class>
 		
 		<properties>
-			 <property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:192.168.1.12/3050:WEB_CHAMADOS"/> 
+			 <property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:192.168.1.12/3051:SUPORTE"/> 
 			<!--<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:192.168.1.100/3050:WEB_CHAMADOS"/>-->
 			<property name="javax.persistence.jdbc.user" value="sysdba"/>
 			<property name="javax.persistence.jdbc.password" value="masterkey"/>

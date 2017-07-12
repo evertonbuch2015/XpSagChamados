@@ -9,9 +9,7 @@ import br.com.sintech.core.dao.ChamadoAnexoDao;
 import br.com.sintech.core.dao.ChamadoDao;
 import br.com.sintech.core.entity.Chamado;
 import br.com.sintech.core.entity.ChamadoAnexo;
-import br.com.sintech.core.entity.ChamadoMovimento;
 import br.com.sintech.core.entity.GrupoUsuario;
-import br.com.sintech.core.entity.SituacaoChamado;
 import br.com.sintech.core.util.NegocioException;
 import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.core.util.UtilErros;
@@ -34,21 +32,22 @@ public class ServiceChamado implements GenericService<Chamado> {
 			
 			try {
 				
-				ChamadoMovimento movimento = new ChamadoMovimento();
+				/*ChamadoMovimento movimento = new ChamadoMovimento();
 				movimento.setChamado(entidade);
 				movimento.setData(new Date());
 				movimento.setDescricao("Chamado Aberto");
-				movimento.setSituacao(SituacaoChamado.ABERTO);
+				movimento.setSituacao(Constantes.getInstance().getSituacaoChamadoInicial());
 				
 				
-				entidade.getMovimentos().add(movimento);
+				entidade.getMovimentos().add(movimento);*/
 				entidade.setUsuario(SessionContext.getInstance().getUsuarioLogado());				
 				
 				String protocolo = 
 						new SimpleDateFormat("ddMMyyyy").format(new java.util.Date())+ 
 						dao.getCodigoProtocolo();
 				
-				entidade.setProtocolo(protocolo);
+				Double d = Double.parseDouble(protocolo);
+				entidade.setProtocolo(d);
 				
 				
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {

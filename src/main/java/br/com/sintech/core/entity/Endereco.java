@@ -11,7 +11,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CAD_ENDERECO")
+@Table(name = "UPD_CLIENTES_ENDERECO")
 public class Endereco implements Serializable {
 
 	/**
@@ -22,9 +22,9 @@ public class Endereco implements Serializable {
 
 
 	@Id
-    @SequenceGenerator(name="G_CAD_ENDERECO", sequenceName="\"G_CAD_ENDERECO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_ENDERECO")
-    @Column(name = "COD_CADENDERECO")
+    @SequenceGenerator(name="G_UPD_CLIENTES_ENDERECO", sequenceName="\"G_UPD_CLIENTES_ENDERECO\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_CLIENTES_ENDERECO")
+    @Column(name = "COD_UPDCLIENTESENDERECO")
     private Integer idEndereco;
 
     

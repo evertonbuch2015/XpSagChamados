@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,16 +13,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="CAD_PROGRAMA")
+@Table(name="UPD_CAD_PROGRAMAS")
 public class Programa implements Serializable{
 
 	private static final long serialVersionUID = 4264765383244512511L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CAD_PROGRAMA", sequenceName="\"G_CAD_PROGRAMA\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_PROGRAMA")
-    @Column(name = "COD_CADPROGRAMA")
+    @SequenceGenerator(name="G_UPD_CAD_PROGRAMAS", sequenceName="\"G_UPD_CAD_PROGRAMAS\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_CAD_PROGRAMAS")
+    @Column(name = "COD_UPDCADPROGRAMAS")
     private Integer idPrograma;
 	
 	
@@ -32,7 +30,7 @@ public class Programa implements Serializable{
 	private String programa;
 	
 	
-	@Column(name = "NOME",length= 40)
+	@Column(name = "NOME_MENU",length= 40)
 	private String nome;
 	
 	
@@ -40,9 +38,9 @@ public class Programa implements Serializable{
 	private String versao;
 	
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "MENU_SISTEMA")
-	private MenuSistema menu;
+	//@Enumerated(EnumType.STRING)
+	@Column(name = "MENU")
+	private String menu;
 
 	
 	public Integer getIdPrograma() {
@@ -85,12 +83,12 @@ public class Programa implements Serializable{
 	}
 
 
-	public MenuSistema getMenu() {
+	public String getMenu() {
 		return menu;
 	}
 
 
-	public void setMenu(MenuSistema menu) {
+	public void setMenu(String menu) {
 		this.menu = menu;
 	}
 

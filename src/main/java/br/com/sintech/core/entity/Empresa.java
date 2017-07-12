@@ -22,16 +22,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity
-@Table(name="CAD_EMPRESA")
+@Table(name="UPD_CLIENTES")
 public class Empresa implements Serializable {
 
 	private static final long serialVersionUID = -5693542061510108613L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CAD_EMPRESA", sequenceName="\"G_CAD_EMPRESA\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CAD_EMPRESA")
-    @Column(name = "COD_CADEMPRESA")
+    @SequenceGenerator(name="G_UPD_CLIENTES", sequenceName="\"G_UPD_CLIENTES\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_CLIENTES")
+    @Column(name = "COD_UPDCLIENTES")
     private Integer idEmpresa;
 	
 	
@@ -48,21 +48,13 @@ public class Empresa implements Serializable {
     private String nomeRazao;
 
   
-    @Column(name = "NOME_FANTASIA" ,nullable = true , length = 70)
+    @Column(name = "NOME" ,nullable = true , length = 70)
     private String nomeFantasia;
     
     
     @Column(name = "DOCUMENTO" ,nullable = true , length = 18, unique = true)
     private String documento;
-    
-    
-    @Column(name = "INSCRICAO_ESTADUAL", length = 15)
-    private String inscEstadual;
-    
-    
-    @Column(name = "INSCRICAO_MUNICIPAL", length = 15)
-    private String inscMunicipal;  
-            
+                
     
     @Column(name = "DATA_CADASTRO")
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -86,23 +78,25 @@ public class Empresa implements Serializable {
     private String telefone2;
     
             
-    @Column(name = "OBS" , length = 255)
+    @Column(name = "OBSERVACOES" , length = 255)
     private String obs;
     
     
-    @Column(name = "ATIVO")
-    private Character ativo;
+    @Column(name = "INATIVO")
+    private Character inativo;
     
      
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name ="COD_CADENDERECO")
+    @JoinColumn(name ="COD_UPDCLIENTESENDERECO")
     private Endereco endereco;
 
     
     @Column(name = "DIRETORIO_LOCAL")
     private String diretorioLocal;
     
+    
     //-------------------------------	GETs and SETs------------------------------//
+    
     
 	public Integer getIdEmpresa() {
 		return idEmpresa;
@@ -170,24 +164,6 @@ public class Empresa implements Serializable {
 	}
 	
 
-	public String getInscEstadual() {
-		return inscEstadual;
-	}
-
-	public void setInscEstadual(String inscEstadual) {
-		this.inscEstadual = inscEstadual;
-	}
-
-
-	public String getInscMunicipal() {
-		return inscMunicipal;
-	}
-
-	public void setInscMunicipal(String inscMunicipal) {
-		this.inscMunicipal = inscMunicipal;
-	}
-
-
 	public String getDataCadastroFormatada(){
 		return (this.dataCadastro != null)?new SimpleDateFormat("dd/MM/yyyy").format(dataCadastro):null;
 	}
@@ -247,19 +223,19 @@ public class Empresa implements Serializable {
 
 
 	public Character getAtivo() {
-		return ativo;
+		return inativo;
 	}
 	
 	public void setAtivo(Character ativo) {
-		this.ativo = ativo;
+		this.inativo = ativo;
 	}
 
 	
 	public Boolean isAtivo() {
-		if (this.ativo == null)
+		if (this.inativo == null)
 			return null;
 		
-		return ativo.equals('S') ? true : false;
+		return inativo.equals('S') ? true : false;
 	}
 	
 	

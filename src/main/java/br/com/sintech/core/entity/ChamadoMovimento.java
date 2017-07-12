@@ -6,8 +6,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,16 +19,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="CHAMADO_MOVIMENTO")
+@Table(name="UPD_SUPORTE_MOVIMENTO")
 public class ChamadoMovimento implements Serializable{
 
 	private static final long serialVersionUID = -2903040050221826268L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CHAMADO_MOVIMENTO", sequenceName="\"G_CHAMADO_MOVIMENTO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO_MOVIMENTO")
-    @Column(name = "COD_CHAMADOMOVIMENTO")
+    @SequenceGenerator(name="G_UPD_SUPORTE_MOVIMENTO", sequenceName="\"G_UPD_SUPORTE_MOVIMENTO\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_SUPORTE_MOVIMENTO")
+    @Column(name = "COD_UPDSUPORTEMOVIMENTO")
 	private Integer idChamadoMovimento;
 	
 	
@@ -43,18 +41,18 @@ public class ChamadoMovimento implements Serializable{
 	private String descricao;
 	
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name="SITUACAO")
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name ="COD_UPDSTATUS")
 	private SituacaoChamado situacao;
 	
 	
 	@OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name ="COD_USUARIORESPONSAVEL")
+    @JoinColumn(name ="CODIGOSISUSUARIO_RESPONSAVEL")
 	private Usuario responsavel;
 	
 	
 	@ManyToOne
-    @JoinColumn(name ="COD_CHAMADO")
+    @JoinColumn(name ="COD_UPDSUPORTE")
     private Chamado chamado;
 
 

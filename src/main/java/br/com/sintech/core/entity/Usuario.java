@@ -34,15 +34,15 @@ public class Usuario implements Serializable {
 	@Id
 	@SequenceGenerator(name = "G_SIS_USUARIO", sequenceName = "\"G_SIS_USUARIO\"", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G_SIS_USUARIO")
-	@Column(name = "COD_SISUSUARIO")
+	@Column(name = "CODIGOSISUSUARIO")
 	private Integer idUsusario;
 
 	
 	@NotEmpty(message = "O Usuário deve ser informado!")
-	@Column(name = "NOME_USUARIO", nullable = true, length = 20)
+	@Column(name = "NOME", nullable = true, length = 20)
 	private String nomeUsuario;
 
-	@Column(name = "SENHA", nullable = true, length = 70)
+	@Column(name = "PWD", nullable = true, length = 70)
 	private String senha;
 	
 	
@@ -55,7 +55,7 @@ public class Usuario implements Serializable {
 	@Column(name="FRASE_SECRETA" , nullable = false, length = 60)
 	private String fraseSecreta;
 
-	@Column(name = "GRUPO_USUARIO", nullable = false, length = 20)
+	@Column(name = "GRUPO", nullable = false, length = 20)
 	@Enumerated(EnumType.STRING)
 	private GrupoUsuario grupo;
 	
@@ -63,16 +63,16 @@ public class Usuario implements Serializable {
 	@Column(name = "SETOR", length = 50)
 	private String setor;
 
-	@Column(name = "ATIVO")
-	private Character ativo;
+	@Column(name = "INATIVO")
+	private Character inativo;
 
 	@Column(name = "EM_FERIAS")
 	private Character emFerias;
 
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "SIS_USUARIO_EMPRESA", joinColumns = {
-			@JoinColumn(name = "COD_SISUSUARIO") }, inverseJoinColumns = { @JoinColumn(name = "COD_CADEMPRESA") })
+	@JoinTable(name = "SIS_USUARIO_CLIENTES", joinColumns = {
+			@JoinColumn(name = "COD_SISUSUARIO") }, inverseJoinColumns = { @JoinColumn(name = "COD_UPDCLIENTES") })
 	private List<Empresa> empresas;
 
 	// -------------------------------- GETs and SETs------------------------------//
@@ -140,11 +140,11 @@ public class Usuario implements Serializable {
 
 	
 	public Character getAtivo() {
-		return ativo;
+		return inativo;
 	}
 	
 	public void setAtivo(Character ativo) {
-		this.ativo = ativo;
+		this.inativo = ativo;
 	}
 	
 	
@@ -186,10 +186,10 @@ public class Usuario implements Serializable {
 	
 
 	public Boolean isAtivo() {
-		if (this.ativo == null)
+		if (this.inativo == null)
 			return null;
 		
-		return ativo.equals('S') ? true : false;
+		return inativo.equals('S') ? true : false;
 	}
 	
 	// -------------------------------- Métodos Auxiliares------------------------------//

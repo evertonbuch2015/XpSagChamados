@@ -17,16 +17,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="CHAMADO_ANEXO")
+@Table(name="UPD_SUPORTE_ANEXOS")
 public class ChamadoAnexo implements Serializable {
 
 	private static final long serialVersionUID = -7361524004280774623L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CHAMADO_ANEXO", sequenceName="\"G_CHAMADO_ANEXO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO_ANEXO")
-    @Column(name = "COD_CHAMADOANEXO")
+    @SequenceGenerator(name="G_UPD_SUPORTE_ANEXOS", sequenceName="\"G_UPD_SUPORTE_ANEXOS\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_SUPORTE_ANEXOS")
+    @Column(name = "COD_UPDSUPORTEANEXOS")
     private Integer idChamadoAnexo;
 	
 	
@@ -53,7 +53,7 @@ public class ChamadoAnexo implements Serializable {
 	
 	
 	@ManyToOne
-    @JoinColumn(name ="COD_CHAMADO")
+    @JoinColumn(name ="COD_UPDSUPORTE")
     private Chamado chamado;
 	
 

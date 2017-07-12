@@ -9,8 +9,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,21 +23,21 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name="CHAMADO")
+@Table(name="UPD_SUPORTE")
 public class Chamado implements Serializable{
 
 	private static final long serialVersionUID = 8028945669874224625L;
 
 
 	@Id
-    @SequenceGenerator(name="G_CHAMADO", sequenceName="\"G_CHAMADO\"", allocationSize=1)  
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_CHAMADO")
-    @Column(name = "COD_CHAMADO")
+    @SequenceGenerator(name="G_UPD_SUPORTE", sequenceName="\"G_UPD_SUPORTE\"", allocationSize=1)  
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_SUPORTE")
+    @Column(name = "COD_UPDSUPORTE")
     private Integer idChamado;
 	
 	
-	@Column(name="PROTOCOLO",length= 20)
-	private String protocolo;
+	@Column(name="PROTOCOLO")
+	private Double protocolo;
 	
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -52,43 +50,41 @@ public class Chamado implements Serializable{
 	private Date dataEncerramento;
 	
 	
-	@Column(name="TITULO")
+	@Column(name="RESUMO_SOLICITACAO")
 	private String titulo;
 	
 	
-	@Column(name="DESCRICAO")
+	@Column(name="DESCRICAO_SOLICITACAO")
 	private String descricao;
 	
 	
-	@Enumerated(EnumType.STRING)
+
 	@Column(name="SITUACAO", insertable=false, updatable=false)
-	private SituacaoChamado situacao;
+	private String situacao;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="COD_USUARIO")
+    @JoinColumn(name ="CODIGOSISUSUARIO_ABERTURA")
 	private Usuario usuario;
 	
 
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="COD_CADEMPRESA")
+    @JoinColumn(name ="COD_UPDCLIENTES")
 	private Empresa empresa;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="COD_CADPROGRAMA")
+    @JoinColumn(name ="COD_UPDCADPROGRAMAS")
 	private Programa programa;
 	
 	
 	@OneToMany(mappedBy = "chamado", targetEntity = ChamadoMovimento.class,
 			fetch = FetchType.LAZY, cascade = CascadeType.ALL)   
-	//@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
 	private List<ChamadoMovimento> movimentos;
 	
 	
 	@OneToMany(mappedBy = "chamado", targetEntity = ChamadoAnexo.class,
-			fetch = FetchType.LAZY, cascade = CascadeType.ALL)    
-	//@Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
+			fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ChamadoAnexo> anexos;
 
 	
@@ -103,11 +99,11 @@ public class Chamado implements Serializable{
 	}
 
 
-	public String getProtocolo() {
+	public Double getProtocolo() {
 		return protocolo;
 	}
 
-	public void setProtocolo(String protocolo) {
+	public void setProtocolo(Double protocolo) {
 		this.protocolo = protocolo;
 	}
 
@@ -162,11 +158,11 @@ public class Chamado implements Serializable{
 	}
 
 
-	public SituacaoChamado getSituacao() {
+	public String getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(SituacaoChamado situacao) {
+	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
 

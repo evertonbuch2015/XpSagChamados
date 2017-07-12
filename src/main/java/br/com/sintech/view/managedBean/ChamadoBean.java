@@ -169,8 +169,8 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 	}	
 	
 	
-	public SituacaoChamado[] getSituacoesChamado(){
-		return SituacaoChamado.values();
+	public List<SituacaoChamado> getSituacoesChamado(){
+		return Constantes.getInstance().getListaSituacaoChamado();
 	}	
 	
 	public List<Empresa> getEmpresas(){

@@ -161,18 +161,6 @@
 							readonly="#{empresaBean.visualizando}"
 							requiredMessage="Informe o Número do Documento!"/>
 						
-						
-						<p:outputLabel value="#{label.insc_estadual}:" for="insc_estadual" />							
-						<p:inputMask id="insc_estadual"
-							value="#{empresaBean.entidade.inscEstadual}"
-							readonly="#{empresaBean.visualizando}"/>
-							
-						
-						<p:outputLabel value="#{label.insc_municipal}:" for="insc_municipal" />							
-						<p:inputMask id="insc_municipal"
-							value="#{empresaBean.entidade.inscMunicipal}"
-							mask="999999999-9" placeholder="Ex: 999999999-9 "
-							readonly="#{empresaBean.visualizando}"/>
 											
 											
 						<p:outputLabel value="#{label.data_cadastro}:" for="dtCadastro"/>

@@ -49,7 +49,7 @@
 					</p:column>
 					
 					<p:column headerText="#{label.situacao}" width="80" priority="2">
-						<h:outputText value="#{entidade.situacao.label}" />
+						<h:outputText value="#{entidade.situacao}" />
 					</p:column>
 					
 					<p:column headerText="#{label.data_solicitacao}" width="120" priority="3">
@@ -101,7 +101,7 @@
 							
 						<p:outputLabel value="#{label.situacao}:" for="situacao" />
 						<p:inputText id="situacao"
-							value="#{chamadoBean.entidade.situacao.label}"
+							value="#{chamadoBean.entidade.situacao}"
 							readonly="true"/>
 							
 							
@@ -242,7 +242,7 @@
 					style="margin: 0px 20px;">									
 					
 					<p:column headerText="#{label.situacao}" width="90">
-						<h:outputText value="#{movimento.situacao.label}" />
+						<h:outputText value="#{movimento.situacao}" />
 					</p:column>
 
 					<p:column headerText="#{label.data_movimentacao}" width="130">
@@ -308,7 +308,7 @@
 					disabled="#{chamadoBean.filtro.ordinal() ne 1}">
 											
 					<f:selectItems value="#{chamadoBean.situacoesChamado}" var="a"
-						itemValue="#{a}" itemLabel="#{a.label}"/>  						
+						itemValue="#{a}" itemLabel="#{a.descricao}"/>  						
 				</p:selectOneMenu>
 				
 				

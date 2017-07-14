@@ -6,9 +6,9 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.sintech.core.entity.MenuSistema;
 import br.com.sintech.core.entity.Programa;
 import br.com.sintech.core.service.ServicePrograma;
+import br.com.sintech.core.util.Constantes;
 import br.com.sintech.view.util.UtilMensagens;
 
 
@@ -63,8 +63,8 @@ public class ProgramaBean extends GenericBean<Programa, ServicePrograma>implemen
 	// =============================GET AND SET=====================================
 
 	
-	public MenuSistema[] getMenusSistema(){
-		return MenuSistema.values();
+	public List<String> getMenusSistema(){
+		return Constantes.getInstance().getListaMenusSistema();
 	}
 
 	

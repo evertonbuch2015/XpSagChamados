@@ -32,8 +32,8 @@ public class Usuario implements Serializable {
 
 	
 	@Id
-	@SequenceGenerator(name = "G_SIS_USUARIO", sequenceName = "\"G_SIS_USUARIO\"", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G_SIS_USUARIO")
+	@SequenceGenerator(name = "G_SISUSUARIO", sequenceName = "\"G_SISUSUARIO\"", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "G_SISUSUARIO")
 	@Column(name = "CODIGOSISUSUARIO")
 	private Integer idUsusario;
 
@@ -139,11 +139,11 @@ public class Usuario implements Serializable {
 	}
 
 	
-	public Character getAtivo() {
+	public Character getInativo() {
 		return inativo;
 	}
 	
-	public void setAtivo(Character ativo) {
+	public void setInativo(Character ativo) {
 		this.inativo = ativo;
 	}
 	
@@ -185,7 +185,7 @@ public class Usuario implements Serializable {
 	
 	
 
-	public Boolean isAtivo() {
+	public Boolean isInativo() {
 		if (this.inativo == null)
 			return null;
 		
@@ -217,5 +217,11 @@ public class Usuario implements Serializable {
 		} else if (!idUsusario.equals(other.idUsusario))
 			return false;
 		return true;
+	}
+
+	
+	@Override
+	public String toString(){
+		return nomeColaborador;
 	}
 }

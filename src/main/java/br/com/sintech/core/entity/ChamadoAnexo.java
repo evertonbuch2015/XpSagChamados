@@ -35,7 +35,7 @@ public class ChamadoAnexo implements Serializable {
 	
 	
 	@Lob
-	@Column(name="ARQUIVO", updatable=false)	
+	@Column(name="ANEXO", updatable=false)	
 	@Basic(fetch=FetchType.LAZY)
 	private byte[] arquivo;
 	
@@ -145,7 +145,7 @@ public class ChamadoAnexo implements Serializable {
 
 	
 	public String getTamanhoFormatado() {
-		if(tamanho > 0){
+		if(tamanho !=null && tamanho > 0){
 			if(tamanho >= 1024 && tamanho < 1048576){
 				return (tamanho / 1024)+" KB";
 			}else if(tamanho >= 1048576){

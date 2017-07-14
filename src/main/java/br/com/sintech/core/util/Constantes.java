@@ -19,7 +19,7 @@ public class Constantes {
 	private List<Empresa> listaEmpresas;
 	private List<Usuario> usuariosLogados;
 	private List<SituacaoChamado> listaSituacaoChamado;
-	
+	private List<String> listaMenusSistema; 
 	
 	
 	private Constantes() {
@@ -41,6 +41,7 @@ public class Constantes {
 			listaProgramas = new ServicePrograma().buscarTodos();
 			listaEmpresas = new ServiceEmpresa().buscarTodos();
 			listaSituacaoChamado = new ServiceSituacaoChamado().buscarTodos();
+			listaMenusSistema = new ServicePrograma().getMenusSistema();
 			
 			usuariosLogados = new ArrayList<Usuario>();			
 		} catch (PersistenciaException e) {
@@ -92,4 +93,8 @@ public class Constantes {
 		return usuariosLogados;
 	}
 	
+	
+	public List<String> getListaMenusSistema() {
+		return listaMenusSistema;
+	}
 }

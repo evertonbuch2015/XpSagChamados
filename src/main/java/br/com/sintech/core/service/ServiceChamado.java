@@ -32,22 +32,14 @@ public class ServiceChamado implements GenericService<Chamado> {
 			
 			try {
 				
-				/*ChamadoMovimento movimento = new ChamadoMovimento();
-				movimento.setChamado(entidade);
-				movimento.setData(new Date());
-				movimento.setDescricao("Chamado Aberto");
-				movimento.setSituacao(Constantes.getInstance().getSituacaoChamadoInicial());
-				
-				
-				entidade.getMovimentos().add(movimento);*/
 				entidade.setUsuario(SessionContext.getInstance().getUsuarioLogado());				
-				
+
 				String protocolo = 
-						new SimpleDateFormat("ddMMyyyy").format(new java.util.Date())+ 
-						dao.getCodigoProtocolo();
+						new SimpleDateFormat("yyyyMM").format(new java.util.Date())+ 
+						String.format("%04d", dao.getCodigoProtocolo());
 				
-				Double d = Double.parseDouble(protocolo);
-				entidade.setProtocolo(d);
+				Double num = Double.parseDouble(protocolo);
+				entidade.setProtocolo(num);
 				
 				
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {
@@ -72,18 +64,13 @@ public class ServiceChamado implements GenericService<Chamado> {
 			try {
 				
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {
-					if(anexo.getIdChamadoAnexo() == null){
+					if(anexo.getIdChamadoAnexo() == null || anexo.getCaminho() == null){
 						anexo.setCaminho(
 								entidade.getEmpresa().getDiretorioLocal()+ "\\" + entidade.getProtocolo()+ "\\");
 					}											
 				}
 				
-				dao.update(entidade);				
-				
-				for (ChamadoAnexo anexo : entidade.getAnexos()) {										
-					ServiceChamadoAnexo.gravar(anexo);
-				}
-								
+				dao.update(entidade);								
 				
 				return "Chamado Alterado com Sucesso";
 			} catch (Exception e) {

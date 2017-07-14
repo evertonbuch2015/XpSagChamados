@@ -33,10 +33,12 @@
 			<p:tab title="Consulta"> 	
 				
 				<p:dataTable id="tabela"
-					value="#{usuarioBean.entidades}" var="entidade" 
+					value="#{usuarioBean.entidades}" var="entidade"
 					selection="#{usuarioBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idUsusario}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
+					rows="15" paginatorPosition="bottom"
+					paginator="true" paginatorAlwaysVisible="false" 
+					emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px -11px;" 
 					rendered="#{usuarioBean.buscando}">				
 					
@@ -49,9 +51,9 @@
 
 					<p:column headerText="#{label.ativo}" style="width: 7%; ">
 						<p:graphicImage value="/resources/images/checked.png"
-										rendered="#{entidade.isAtivo()}" />
+										rendered="#{not entidade.isInativo()}" />
 						<p:graphicImage value="/resources/images/unchecked.png"
-										rendered="#{not entidade.isAtivo()}" />
+										rendered="#{entidade.isInativo()}" />
 					</p:column>
 
 					<p:column headerText="#{label.codigo}" style="width: 7%;">
@@ -173,9 +175,9 @@
         				
         				
         				
-        				<p:outputLabel value="#{label.ativo}" for="ativo"/>	
-						<p:selectOneButton id="ativo"
-							value="#{usuarioBean.entidade.ativo}" 
+        				<p:outputLabel value="#{label.inativo}" for="inativo"/>	
+						<p:selectOneButton id="inativo"
+							value="#{usuarioBean.entidade.inativo}" 
 							disabled="#{usuarioBean.visualizando}"
 							styleClass="bu-selectOneButton"
 							style="	max-width: 35%;">

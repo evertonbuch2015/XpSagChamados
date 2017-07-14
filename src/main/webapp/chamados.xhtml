@@ -30,12 +30,17 @@
 		
 		
 		<p:tabView rendered="#{chamadoBean.buscando}" prependId="false">						
-			<p:tab title="#{label.consulta}"> 	
-				<p:dataTable value="#{chamadoBean.entidades}" var="entidade" id="tabela" 
+			<p:tab title="#{label.consulta}">
+			 	
+				<p:dataTable id="tabela"
+					value="#{chamadoBean.entidades}" var="entidade" 
 					selection="#{chamadoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idChamado}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;">				
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px -11px;"
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">				
 					
 
 					<p:ajax event="rowDblselect" listener="#{chamadoBean.onRowDblClckSelect}"
@@ -44,19 +49,26 @@
 					<p:ajax event="rowSelect" listener="#{chamadoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.protocolo}" width="90">
+					<p:column headerText="#{label.protocolo}" width="110" sortBy="#{entidade.protocolo}">
 						<h:outputText value="#{entidade.protocolo}" />
 					</p:column>
 					
-					<p:column headerText="#{label.situacao}" width="80" priority="2">
+					
+					<p:column headerText="#{label.situacao}" width="110" 
+						sortBy="#{entidade.situacao}" priority="2">
+						
 						<h:outputText value="#{entidade.situacao}" />
 					</p:column>
 					
-					<p:column headerText="#{label.data_solicitacao}" width="120" priority="3">
+					
+					<p:column headerText="#{label.data_solicitacao}" width="120" 
+						sortBy="#{entidade.dataSolicitacao}" priority="3">
+						
 						<h:outputText value="#{entidade.dataSolicitacaoFormatada}" />
 					</p:column>
 					
-					<p:column headerText="#{label.empresa}">
+					
+					<p:column headerText="#{label.empresa}" sortBy="#{entidade.empresa.nomeRazao}">
 						<h:outputText value="#{entidade.empresa.nomeFantasia}" />
 					</p:column>
 
@@ -173,8 +185,8 @@
 						
 						<p:outputLabel value="#{label.descricao}" for="descricao" />
 						<p:inputTextarea value="#{chamadoBean.entidade.descricao}" id="descricao"
-							style="width: 100%" rows="5" cols="30" counter="display"
-							maxlength="1500" counterTemplate="{0} Caracteres Restantes"
+							style="width: 100%" rows="15" cols="30" counter="display"
+							maxlength="2000" counterTemplate="{0} Caracteres Restantes"
 							autoResize="false" 
 							readonly="#{chamadoBean.visualizando}"/>
 						<h:outputText/>

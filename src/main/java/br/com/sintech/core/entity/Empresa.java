@@ -37,10 +37,6 @@ public class Empresa implements Serializable {
 	
     @Column(name = "CODIGO" ,nullable = true , length = 2, unique = true)
 	private String codigo;
-   
-    
-    @Column(name = "FILIAL" ,nullable = true , length = 2, unique = true)
-	private String filial;
     
 	
 	@NotEmpty(message="O Nome deve ser informado!")
@@ -113,15 +109,6 @@ public class Empresa implements Serializable {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}
-
-	
-	public String getFilial() {
-		return filial;
-	}
-	
-	public void setFilial(String filial) {
-		this.filial = filial;
 	}
 	
 
@@ -222,16 +209,16 @@ public class Empresa implements Serializable {
 	}
 
 
-	public Character getAtivo() {
+	public Character getInativo() {
 		return inativo;
 	}
 	
-	public void setAtivo(Character ativo) {
+	public void setInativo(Character ativo) {
 		this.inativo = ativo;
 	}
 
 	
-	public Boolean isAtivo() {
+	public Boolean isInativo() {
 		if (this.inativo == null)
 			return null;
 		
@@ -241,6 +228,9 @@ public class Empresa implements Serializable {
 	
 
 	public Endereco getEndereco() {
+		if(endereco == null){
+			this.endereco = new Endereco();
+		}
 		return endereco;
 	}
 

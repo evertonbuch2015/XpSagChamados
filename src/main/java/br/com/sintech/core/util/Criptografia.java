@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Criptografia {
 	
-	private static final String CHAVE_HASH = "\"#)G1�G@BOG R2�x@PAF S1�s@AVD S3�wXPAF_-\"";
+	private static final String CHAVE_HASH = "\"#)G1ªG@BOG R2ªx@PAF S1ªs@AVD S3ªwXPAF_-\"";
 	
 	public static String criptografarSha1(String texto) {
 		String textoCriptografado = "";

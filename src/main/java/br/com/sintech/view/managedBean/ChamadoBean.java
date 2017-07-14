@@ -87,7 +87,6 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 	@Override
 	public Chamado criarEntidade() {
 		Chamado chamado = new Chamado();
-		chamado.setDataSolicitacao(new Date());
 		return chamado;
 	}
 	
@@ -129,6 +128,10 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 			try {
 				//grava o arquivo antes de chamar novamente o doDownload
 				ChamadoAnexo anexoAux = new ServiceChamadoAnexo().carregarEntidade(anexo); 
+				
+				if (anexo.getCaminho() == null) {
+					anexoAux.setCaminho(entidade.getEmpresa().getDiretorioLocal() + "\\" + entidade.getProtocolo()+ "\\");
+				}
 				
 				ServiceChamadoAnexo.gravar(anexoAux);
 				doDownload(anexoAux);

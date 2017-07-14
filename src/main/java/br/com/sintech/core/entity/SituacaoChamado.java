@@ -85,6 +85,6 @@ public class SituacaoChamado implements Serializable{
 	
 	@Override
 	public String toString() {
-		return sigla + " - "+ descricao;
+		return descricao;
 	}
 }

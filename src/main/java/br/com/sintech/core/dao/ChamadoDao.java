@@ -19,7 +19,7 @@ public class ChamadoDao extends GenericDao<Chamado> {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		
-		Query query = em.createNativeQuery("select gen_id( G_CODIGO_CHAMADO,1 )from RDB$DATABASE");
+		Query query = em.createNativeQuery("select gen_id( G_PROTOCOLO_CHAMADO,1 )from RDB$DATABASE");
 		
 		BigInteger retorno = (BigInteger) query.getSingleResult();		
 		

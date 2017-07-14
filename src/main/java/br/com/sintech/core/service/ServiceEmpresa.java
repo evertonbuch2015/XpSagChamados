@@ -14,6 +14,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 
 	private EmpresaDao empresaDao;
 	
+	private static final String BUSCAR_TODAS = "Select e From Empresa e order by e.inativo, e.nomeRazao";
 	
 	public ServiceEmpresa() {
 		empresaDao = new EmpresaDao();
@@ -72,7 +73,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 	
 	public List<Empresa> buscarTodos() {
 		try {
-			return empresaDao.findAll();
+			return empresaDao.find(BUSCAR_TODAS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Empresa>();

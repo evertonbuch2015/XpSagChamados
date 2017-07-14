@@ -114,5 +114,10 @@ public class ServicePrograma implements GenericService<Programa> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
+	
+	
+	public List<String> getMenusSistema(){
+		return dao.findMenusSistema();
+	}
 
 }

@@ -130,14 +130,13 @@
 												
 						<p:outputLabel value="#{label.menu}" for="menu"/>
 						<p:selectOneMenu id="menu"
+							editable="true" autoWidth="false"
 							value="#{programaBean.entidade.menu}"
 							required="true" 
 							requiredMessage="Informe no endereço o estado!"
 							disabled="#{programaBean.visualizando}">
 							
-							<f:selectItem itemLabel="Selecione"/>
-							<f:selectItems value="#{programaBean.menusSistema}" var="a"
-								itemValue="#{a}" itemLabel="#{a.label}"/>
+							<f:selectItems value="#{programaBean.menusSistema}"/>
 						</p:selectOneMenu>
 						
 						

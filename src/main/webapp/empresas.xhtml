@@ -31,10 +31,14 @@
 		
 		<p:tabView rendered="#{empresaBean.buscando}" prependId="false">						
 			<p:tab title="#{label.consulta}"> 	
-				<p:dataTable value="#{empresaBean.entidades}" var="entidade" id="tabela" 
-					selection="#{empresaBean.entidade}" selectionMode="single"
-					rowKey="#{entidade.idEmpresa}" reflow="true"									
-					widgetVar="carsTable" emptyMessage="#{label.msg_tabela_vazia}"
+				<p:dataTable id="tabela"
+					value="#{empresaBean.entidades}" var="entidade" 
+					selection="#{empresaBean.entidade}" 
+					selectionMode="single"
+					rowKey="#{entidade.idEmpresa}" reflow="true"
+					rows="15" paginatorPosition="bottom"
+					paginator="true" paginatorAlwaysVisible="false"    				
+					emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px -11px;">				
 					
 
@@ -46,18 +50,14 @@
 
 					<p:column headerText="#{label.ativo}" width="70">
 						<p:graphicImage value="/resources/images/checked.png"
-										rendered="#{entidade.isAtivo()}" />
+										rendered="#{!entidade.isInativo()}" />
 						<p:graphicImage value="/resources/images/unchecked.png"
-										rendered="#{!entidade.isAtivo()}" />
+										rendered="#{entidade.isInativo()}" />
 					</p:column>
 					
 
 					<p:column headerText="#{label.codigo}" width="70">
 						<h:outputText value="#{entidade.codigo}" />
-					</p:column>
-					
-					<p:column headerText="#{label.filial}" width="70">
-						<h:outputText value="#{entidade.filial}" />
 					</p:column>
 					
 
@@ -66,7 +66,7 @@
 					</p:column>
 
 
-					<p:column headerText="#{label.documento}" width="130">
+					<p:column headerText="#{label.documento}" width="130" priority="4">
 						<h:outputText value="#{entidade.documentoFormatado}" />
 					</p:column>
 					
@@ -76,7 +76,7 @@
 					</p:column>
 					
 					
-					<p:column headerText="#{label.acoes}" exportable="false">						
+					<p:column headerText="#{label.acoes}" exportable="false" width="110">						
 						<p:commandButton actionListener="#{empresaBean.editar(entidade)}" 
 							icon="ui-icon-pencil" update="@form"/>
 							
@@ -175,9 +175,9 @@
 						cellpadding="2" layout="grid"
 						columnClasses="ui-grid-col-2 bu-texto,ui-grid-col-2">
 							
-						<p:outputLabel value="#{label.ativo}" for="ativo"/>	
-						<p:selectOneButton id="ativo"
-							value="#{empresaBean.entidade.ativo}"
+						<p:outputLabel value="#{label.inativo}" for="inativo"/>	
+						<p:selectOneButton id="inativo"
+							value="#{empresaBean.entidade.inativo}"
 							styleClass="bu-selectOneButton"
 							style="	max-width: 65%;"
 							disabled="#{empresaBean.visualizando}">
@@ -277,10 +277,18 @@
 
 
 			<p:tab title="Observações">
-				<h:panelGrid columns="1" cellpadding="1">
-					<p:inputTextarea id="observacao"
-						value="#{empresaBean.entidade.obs}"/>
-				</h:panelGrid>
+				<p:panelGrid columns="1"
+					styleClass="ui-panelgrid-blank"
+					layout="grid">		
+								
+					<p:outputLabel value="#{label.obs}" for="observacao"/>	
+					<p:inputTextarea  id="observacao"
+						value="#{empresaBean.entidade.obs}"
+						style="width: 80%" rows="20" cols="30" counter="display"
+						maxlength="2000" counterTemplate="{0} Caracteres Restantes"
+						autoResize="false" readonly="#{apartamentoBean.visualizando}" />
+					<h:outputText id="display" />
+				</p:panelGrid>
 			</p:tab>
 			
 

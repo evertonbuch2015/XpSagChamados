@@ -154,26 +154,26 @@ public class ServiceChamado implements GenericService<Chamado> {
 		try {
 			
 			if(tipoFiltro.equals(TipoFiltro.PROTOCOLO)){
-				String jpql = "Select c From Chamado c where c.protocolo = ?";
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.protocolo = ?";
 				lista = dao.find(jpql,valorFiltro);
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltro.TITULO)){
 				if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-					String jpql = "Select c From Chamado c where c.titulo like ?";
+					String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.titulo like ?";
 					lista = dao.find(jpql, valorFiltro);
 				}else{
-					String jpql = "Select c From Chamado c where c.titulo like ? and c.empresa = ?";
+					String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.titulo like ? and c.empresa = ?";
 					lista = dao.find(jpql, valorFiltro, SessionContext.getInstance().getEmpresaUsuarioLogado());
 				}				
 			}
 			
 			else if(tipoFiltro.equals(TipoFiltro.SITUACAO)){
 				if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-					String jpql = "Select c From Chamado c where c.situacao = ?";
+					String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.situacao = ?";
 					lista = dao.find(jpql, valorFiltro);
 				}else{
-					String jpql = "Select c From Chamado c where c.situacao = ? and c.empresa = ?";
+					String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.situacao = ? and c.empresa = ?";
 					lista = dao.find(jpql, valorFiltro, SessionContext.getInstance().getEmpresaUsuarioLogado());					
 				}
 			}
@@ -181,10 +181,10 @@ public class ServiceChamado implements GenericService<Chamado> {
 			else if(tipoFiltro.equals(TipoFiltro.DATA_SOLICITACAO)){
 				try{
 					if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-						String jpql = " Select c From Chamado c where c.dataSolicitacao = ? ";					
+						String jpql = " Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao = ? ";					
 						lista = dao.find(jpql,valorFiltro);
 					}else{
-						String jpql = " Select c From Chamado c where c.dataSolicitacao = ? and c.empresa = ?";					
+						String jpql = " Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao = ? and c.empresa = ?";					
 						lista = dao.find(jpql,valorFiltro, SessionContext.getInstance().getEmpresaUsuarioLogado());
 					}
 					

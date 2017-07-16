@@ -14,7 +14,9 @@ import javax.persistence.Table;
 @Table(name="UPD_STATUS")
 public class SituacaoChamado implements Serializable{
 
-	
+
+	private static final long serialVersionUID = -8800530948900002793L;
+
 	@Id
     @SequenceGenerator(name="G_UPD_STATUS", sequenceName="\"G_UPD_STATUS\"", allocationSize=1)  
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="G_UPD_STATUS")

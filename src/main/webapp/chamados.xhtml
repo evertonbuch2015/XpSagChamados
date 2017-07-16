@@ -74,7 +74,7 @@
 
 
 					<p:column headerText="#{label.titulo}" >
-						<h:outputText value="#{entidade.titulo}" />
+						<h:outputText value="#{entidade.titulo.toLowerCase()}" />
 					</p:column>
 					
 					
@@ -254,7 +254,7 @@
 					style="margin: 0px 20px;">									
 					
 					<p:column headerText="#{label.situacao}" width="90">
-						<h:outputText value="#{movimento.situacao}" />
+						<h:outputText value="#{movimento.situacao.descricao}" />
 					</p:column>
 
 					<p:column headerText="#{label.data_movimentacao}" width="130">

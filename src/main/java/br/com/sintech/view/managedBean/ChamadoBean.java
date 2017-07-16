@@ -71,7 +71,7 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 		try {
 			
 			if(filtro == TipoFiltro.SITUACAO){
-				this.entidades = service.filtrarTabela(filtro, situacaoFiltro);
+				this.entidades = service.filtrarTabela(filtro, situacaoFiltro.getDescricao());
 			}else if(filtro == TipoFiltro.DATA_SOLICITACAO){
 				this.entidades = service.filtrarTabela(filtro, new SimpleDateFormat("dd/MM/yyyy").format(dataFiltro));
 			}else{

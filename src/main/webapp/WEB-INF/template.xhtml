@@ -39,45 +39,38 @@
 	<div class="bu-inner-container">
 	
 		<h:form>
-		<header class="bu-topbar">
-			<h:graphicImage library="images" name="logo-sistema.png" />			
-			
-			
-			<p:commandButton id="dynaButtoan" class="bu-toggle bu-botao-toggle js-toggle"
-				 type="button" icon="fa  fa-bars"/>			
-						
-			<p:commandButton id="dynaButton"
-				styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-envelope"/>
-			<p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
-				<p:submenu>
-            		<p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
-            		<p:menuitem value="Internal" url="http://www.primefaces.org" icon="ui-icon-star"/>
-        		</p:submenu>
-			
-			</p:menu> 
-			
-			
-			<p:commandButton id="dynaButton2"
-				styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-envelope"/>
-			
-			<!-- 	
-				<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>		
-				<span class="ui-separator">
-                	<span class="ui-icon ui-icon-grip-dotted-vertical" />
-            	</span>
-			
-				<p:splitButton value="#{indexBean.usuarioLogado.nomeColaborador}"  
-					styleClass="bu-toggle" icon="fa fa-envelope" >		        
-		        	<p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
-		    	</p:splitButton>-->
-			
-			
-			
-			
-			<p:outputLabel value="#{indexBean.usuarioLogado.nomeColaborador}" styleClass="bu-toggle"/>
-			
-			
-		</header>
+			<header class="bu-topbar">
+				<h:graphicImage library="images" name="logo-sistema2.png" />			
+				
+				
+				<p:commandButton id="dynaButtoan" class="bu-toggle bu-botao-toggle js-toggle"
+					 type="button" icon="fa  fa-bars"/>			
+							
+				<p:commandButton id="dynaButton"
+					styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-user"/>
+				<p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+					<p:submenu>
+	            		<p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
+	                    <p:menuitem value="#{label.menu_sair}"		action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>
+	        		</p:submenu>
+				
+				</p:menu> 
+				
+				
+							
+				<!--
+					<p:commandButton id="dynaButton2"
+						styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-envelope"/> 	
+					<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>		
+					<span class="ui-separator">
+	                	<span class="ui-icon ui-icon-grip-dotted-vertical" />
+	            	</span>
+	            -->			
+				
+				<p:outputLabel value="#{indexBean.usuarioLogado.nomeColaborador}" 
+					styleClass="bu-toggle" style="margin-top:16px !important;	margin-right: 12px;"/>
+							
+			</header>
 		</h:form>	
 				
 		<h:form prependId="false">		
@@ -102,22 +95,21 @@
 			        <p:submenu label="#{label.menu_suporte}"
 			        	rendered="#{indexBean.permissaoUsuario}">
 			        	
-			        	<p:menuitem value="Autorizações" 
-			            	url="/autorizacao.xhtml?faces-redirect=true" 		icon="fa fa-lock"/>	
+			        	<p:menuitem value="Autorizações" url="#"  icon="fa fa-lock"/>	
 			        
 						<p:menuitem value="#{label.menu_solicitacoes}" 		
-							url="/chamados.xhtml?faces-redirect=true"			icon="fa fa-suitcase" />
+							url="/chamados.xhtml?faces-redirect=true"			icon="fa fa-wrench" />
 	                            
 			        </p:submenu>
 			        
 			        
 			        <p:submenu label="#{label.menu_relatorios}">
-			            <p:menuitem value="#{label.menu_solicitacoes}" icon="fa fa-money"/>			            
+			            <p:menuitem value="#{label.menu_solicitacoes}" icon="fa fa-file-pdf-o"/>			            
 			        </p:submenu>
 			        
 			        <p:submenu label="#{label.menu_configuracoes}" >	                    
 	                    <p:menuitem value="#{label.menu_linguagem}" onclick="PF('dialogIdioma').initPosition(); PF('dialogIdioma').show(); return false;" icon="fa fa-language"/>
-	                    <p:menuitem value="#{label.menu_sobre}" 	url="http://www.primefaces.org/documentation" icon="fa fa-info"/>	
+	                    <p:menuitem value="#{label.menu_sobre}" 	url="#" icon="fa fa-info"/>	
 	                    <p:menuitem value="#{label.menu_sair}"		action="#{indexBean.deslogar()}" icon="fa fa-power-off"/>                    
 			        </p:submenu>
 			    </p:panelMenu>											

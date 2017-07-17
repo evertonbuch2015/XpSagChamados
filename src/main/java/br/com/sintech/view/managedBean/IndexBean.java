@@ -85,7 +85,12 @@ public class IndexBean implements Serializable {
 	
 	
 	private void atribuirPermissoes() {
-		switch (usuarioLogado.getGrupoUsuario()) {
+		permissaoAdmin = SessionContext.getInstance().usuarioLogadoIsADMIN();
+		permissaoProgramador = SessionContext.getInstance().usuarioLogadoIsPROGRAMADOR();
+		permissaoSuporte = SessionContext.getInstance().usuarioLogadoIsSUPORTE();
+		permissaoUsuario = SessionContext.getInstance().usuarioLogadoIsUSUARIO();
+		
+		/*switch (usuarioLogado.getGrupoUsuario()) {
 		case ADMIN:
 			permissaoAdmin = true; 
 			permissaoProgramador = true;
@@ -110,14 +115,10 @@ public class IndexBean implements Serializable {
 			permissaoSuporte = false;
 			permissaoUsuario = true;
 			break;
-		}
+		}*/
 	}
 
 	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public boolean isPermissaoAdmin() {
 		return permissaoAdmin;
 	}

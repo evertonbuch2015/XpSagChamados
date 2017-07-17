@@ -41,6 +41,6 @@ public class DialogEmpresaBean implements Serializable{
 	//--------------------------------	GETs and SETs------------------------------//
 	
 	public List<Empresa> getEmpresas() {
-		return Constantes.getInstance().getEmpresas();
+		return Constantes.getInstance().getEmpresasAtivas();
 	}
 }

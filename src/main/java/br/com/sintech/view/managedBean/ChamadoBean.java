@@ -22,7 +22,6 @@ import org.primefaces.model.UploadedFile;
 import br.com.sintech.core.entity.Chamado;
 import br.com.sintech.core.entity.ChamadoAnexo;
 import br.com.sintech.core.entity.Empresa;
-import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.Programa;
 import br.com.sintech.core.entity.SituacaoChamado;
 import br.com.sintech.core.service.ServiceChamado;
@@ -154,31 +153,13 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 		return entidades;
 	}
 	
-
-	
-	public TipoFiltro getFiltro() {
-		return filtro;
-	}
-	
-		
-	public void setFiltro(TipoFiltro filtro) {
-		this.filtro = filtro;
-	}
-	
-	
-	
-	public TipoFiltro[] tipoFiltros(){
-		return TipoFiltro.values();
-	}	
-	
-	
 	public List<SituacaoChamado> getSituacoesChamado(){
 		return Constantes.getInstance().getListaSituacaoChamado();
 	}	
 	
 	public List<Empresa> getEmpresas(){
-		if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-			return Constantes.getInstance().getEmpresas();
+		if(SessionContext.getInstance().usuarioLogadoIsSUPORTE()){
+			return Constantes.getInstance().getEmpresasAtivas();
 		}else{
 			List<Empresa> lista = new ArrayList<>();
 			lista.add(SessionContext.getInstance().getEmpresaUsuarioLogado());
@@ -186,30 +167,24 @@ public class ChamadoBean extends GenericBean<Chamado, ServiceChamado> implements
 					
 		}
 	}
+		
 	
 	
+	public TipoFiltro getFiltro() {return filtro;}
+		
+	public void setFiltro(TipoFiltro filtro) {this.filtro = filtro;}
 	
+	public TipoFiltro[] tipoFiltros(){return TipoFiltro.values();}	
+		
 	
-	public SituacaoChamado getSituacaoFiltro() {
-		return situacaoFiltro;
-	}
-	
+	public SituacaoChamado getSituacaoFiltro() {return situacaoFiltro;}
 
-	public void setSituacaoFiltro(SituacaoChamado situacaoFiltro) {
-		this.situacaoFiltro = situacaoFiltro;
-	}
+	public void setSituacaoFiltro(SituacaoChamado situacaoFiltro) {this.situacaoFiltro = situacaoFiltro;}
 	
 	
-	
+	public Date getDataFiltro() {return dataFiltro;}
 
-	public Date getDataFiltro() {
-		return dataFiltro;
-	}
-	
-
-	public void setDataFiltro(Date dataFiltro) {
-		this.dataFiltro = dataFiltro;
-	}
+	public void setDataFiltro(Date dataFiltro) {this.dataFiltro = dataFiltro;}
 
 	
 	public String getNomeProgramaTela() {

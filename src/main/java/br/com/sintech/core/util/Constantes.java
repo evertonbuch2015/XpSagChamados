@@ -16,7 +16,7 @@ public class Constantes {
 
 	private static Constantes instance;
 	private List<Programa> listaProgramas;
-	private List<Empresa> listaEmpresas;
+	private List<Empresa> listaEmpresasAtivas;
 	private List<Usuario> usuariosLogados;
 	private List<SituacaoChamado> listaSituacaoChamado;
 	private List<String> listaMenusSistema; 
@@ -34,12 +34,11 @@ public class Constantes {
 		return instance;		
 	}
 		
-	
-	
+		
 	public void refresh(){
 		try {
 			listaProgramas = new ServicePrograma().buscarTodos();
-			listaEmpresas = new ServiceEmpresa().buscarTodos();
+			listaEmpresasAtivas = new ServiceEmpresa().buscarTodosAtivas();
 			listaSituacaoChamado = new ServiceSituacaoChamado().buscarTodos();
 			listaMenusSistema = new ServicePrograma().getMenusSistema();
 			
@@ -52,8 +51,8 @@ public class Constantes {
 	}
 	
 	
-	public List<Empresa> getEmpresas(){		
-		return listaEmpresas;
+	public List<Empresa> getEmpresasAtivas(){		
+		return listaEmpresasAtivas;
 	}
 	
 	
@@ -66,6 +65,7 @@ public class Constantes {
 		return listaSituacaoChamado;
 	}
 	
+	
 	public SituacaoChamado getSituacaoChamadoInicial(){
 		for (SituacaoChamado situacaoChamado : listaSituacaoChamado) {
 			if(situacaoChamado.isEventoInicial()){
@@ -74,6 +74,7 @@ public class Constantes {
 		}
 		return null;
 	}
+	
 	
 	public void addUsuarioLogado(Usuario usuario){
 		if(!this.usuariosLogados.contains(usuario)){

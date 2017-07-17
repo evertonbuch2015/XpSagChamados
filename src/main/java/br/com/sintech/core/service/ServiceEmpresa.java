@@ -12,15 +12,19 @@ import br.com.sintech.view.managedBean.EmpresaBean.TipoFiltro;
 
 public class ServiceEmpresa implements GenericService<Empresa>{
 
+	private static final String BUSCAR_TODAS = 
+			"Select e From Empresa e order by e.inativo, e.nomeRazao";
+	private static final String BUSCAR_TODAS_ATIVAS = 
+			"Select e From Empresa e where e.inativo = ? order by e.nomeRazao";
+	
 	private EmpresaDao empresaDao;
 	
-	private static final String BUSCAR_TODAS = "Select e From Empresa e order by e.inativo, e.nomeRazao";
 	
 	public ServiceEmpresa() {
 		empresaDao = new EmpresaDao();
 	}
 	
-	
+		
 	public String salvar(Empresa entidate)throws Exception {
 		if (entidate.getIdEmpresa() == null) {
 			
@@ -57,7 +61,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
             		" \nErro: " + UtilErros.getMensagemErro(ex));
 		}
 	}
-
+	
 	
 	public Empresa carregarEntidade(Empresa Empresa) throws PersistenciaException{
 		String jpql = "Select e From Empresa e left JOIN FETCH e.endereco where e.idEmpresa = ?1";
@@ -69,7 +73,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
             		" \nErro: " + UtilErros.getMensagemErro(e));		
 		}
 	}
-
+	
 	
 	public List<Empresa> buscarTodos() {
 		try {
@@ -79,7 +83,17 @@ public class ServiceEmpresa implements GenericService<Empresa>{
 			return new ArrayList<Empresa>();
 		}
 	}
-
+	
+	
+	public List<Empresa> buscarTodosAtivas() {
+		try {
+			return empresaDao.find(BUSCAR_TODAS_ATIVAS,'N');
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Empresa>();
+		}
+	}
+		
 	
 	public List<Empresa> filtrarTabela(TipoFiltro tipoFiltro , String valorFiltro)throws Exception{
 		List<Empresa> lista = null;
@@ -100,7 +114,7 @@ public class ServiceEmpresa implements GenericService<Empresa>{
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}
 	}
-
+	
 	
 	public void consisteAntesEditar(Empresa entidade) throws NegocioException{
 

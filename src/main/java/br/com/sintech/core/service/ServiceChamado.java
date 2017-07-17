@@ -84,6 +84,12 @@ public class ServiceChamado implements GenericService<Chamado> {
 	
 	@Override
 	public String excluir(Chamado entidade) throws Exception {
+		entidade = carregarEntidade(entidade);
+		
+		if(entidade.getMovimentos().get(entidade.getMovimentos().size() -1).getSituacao().getSigla() != 'S' ){
+			throw new NegocioException("Chamado já está em processo de Análise ou Concluido, não pode ser excluido!");
+		}
+		
 		try {
 			dao.delete(entidade);
 			return "Chamado removido com Sucesso!";
@@ -119,7 +125,7 @@ public class ServiceChamado implements GenericService<Chamado> {
 	@Override
 	public List<Chamado> buscarTodos() throws PersistenciaException {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MONTH, -1);
+		c.add(Calendar.MONTH, -2);
 		
 		Date d = c.getTime();
 		
@@ -127,10 +133,10 @@ public class ServiceChamado implements GenericService<Chamado> {
 		try {
 			
 			if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ?";				
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? order by c.dataSolicitacao";				
 				lista = dao.find(jpql, d);
 			}else{
-				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? and c.empresa = ?";
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? and c.empresa = ? order by c.dataSolicitacao";
 				lista = dao.find(jpql, d, SessionContext.getInstance().getEmpresaUsuarioLogado());
 			}
 			
@@ -144,7 +150,15 @@ public class ServiceChamado implements GenericService<Chamado> {
 	
 	@Override
 	public void consisteAntesEditar(Chamado entidade) throws NegocioException {
-
+		try {
+			entidade = carregarEntidade(entidade);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+		}
+		
+		if(entidade.getMovimentos().get(entidade.getMovimentos().size() -1).getSituacao().getSigla() != 'S' ){
+			throw new NegocioException("Chamado já está em processo de Análise ou já foi Concluido, portanto não pode ser Alterado!");
+		}
 	}
 
 	

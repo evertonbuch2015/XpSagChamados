@@ -20,8 +20,11 @@ import br.com.sintech.view.util.SessionContext;
 public class IndexBean implements Serializable {
 	
 	private static final long serialVersionUID = 201405150723L;
+	
 	private String localeCode;
 	private static Map<String, Locale> countries;
+	private Usuario usuarioLogado;
+	private boolean permissaoAdmin,permissaoProgramador,permissaoSuporte,permissaoUsuario;
 	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
@@ -31,8 +34,10 @@ public class IndexBean implements Serializable {
 
 	
 	public IndexBean() {
+		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();
+		atribuirPermissoes();
 	}
-	
+
 	// =======================METODOS DO USUARIO=====================================	
 	
 	public void localeCodeChanged(AjaxBehaviorEvent e) {
@@ -75,6 +80,57 @@ public class IndexBean implements Serializable {
 
 
 	public Usuario getUsuarioLogado(){
-		return SessionContext.getInstance().getUsuarioLogado();
+		return usuarioLogado;
 	}
+	
+	
+	private void atribuirPermissoes() {
+		switch (usuarioLogado.getGrupoUsuario()) {
+		case ADMIN:
+			permissaoAdmin = true; 
+			permissaoProgramador = true;
+			permissaoSuporte = true;
+			permissaoUsuario = true;
+			break;
+		case PROGRAMADOR:
+			permissaoAdmin = false; 
+			permissaoProgramador = true;
+			permissaoSuporte = true;
+			permissaoUsuario = true;
+			break;
+		case SUPORTE:
+			permissaoAdmin = false;
+			permissaoProgramador = false;
+			permissaoSuporte = true;
+			permissaoUsuario = true;
+			break;
+		case USUARIO:
+			permissaoAdmin = false;
+			permissaoProgramador = false;
+			permissaoSuporte = false;
+			permissaoUsuario = true;
+			break;
+		}
+	}
+
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public boolean isPermissaoAdmin() {
+		return permissaoAdmin;
+	}
+
+	public boolean isPermissaoProgramador() {
+		return permissaoProgramador;
+	}
+
+	public boolean isPermissaoSuporte() {
+		return permissaoSuporte;
+	}
+
+	public boolean isPermissaoUsuario() {
+		return permissaoUsuario;
+	}	
 }

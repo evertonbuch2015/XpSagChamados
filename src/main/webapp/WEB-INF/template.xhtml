@@ -38,21 +38,55 @@
 <h:body>
 	<div class="bu-inner-container">
 	
-	
+		<h:form>
 		<header class="bu-topbar">
 			<h:graphicImage library="images" name="logo-sistema.png" />			
 			
 			
-			<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>
+			<p:commandButton id="dynaButtoan" class="bu-toggle bu-botao-toggle js-toggle"
+				 type="button" icon="fa  fa-bars"/>			
+						
+			<p:commandButton id="dynaButton"
+				styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-envelope"/>
+			<p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+				<p:submenu>
+            		<p:menuitem value="External" url="http://www.primefaces.org" icon="ui-icon-home"/>
+            		<p:menuitem value="Internal" url="http://www.primefaces.org" icon="ui-icon-star"/>
+        		</p:submenu>
+			
+			</p:menu> 
+			
+			
+			<p:commandButton id="dynaButton2"
+				styleClass="bu-toggle bu-botao-toggle" type="button" icon="fa fa-envelope"/>
+			
+			<!-- 	
+				<a href="#" class="bu-toggle js-toggle"><i class="fa  fa-bars"></i></a>		
+				<span class="ui-separator">
+                	<span class="ui-icon ui-icon-grip-dotted-vertical" />
+            	</span>
+			
+				<p:splitButton value="#{indexBean.usuarioLogado.nomeColaborador}"  
+					styleClass="bu-toggle" icon="fa fa-envelope" >		        
+		        	<p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+		    	</p:splitButton>-->
+			
+			
+			
+			
 			<p:outputLabel value="#{indexBean.usuarioLogado.nomeColaborador}" styleClass="bu-toggle"/>
+			
+			
 		</header>
-				
+		</h:form>	
 				
 		<h:form prependId="false">		
 			<aside class="bu-sidebar js-sidebar">
 				<p:panelMenu style="width:99%">
 				
-			        <p:submenu label="#{label.menu_cadastro}">			            
+			        <p:submenu label="#{label.menu_cadastro}" 
+			        	rendered="#{indexBean.permissaoProgramador}">
+			        				            
 			            <p:menuitem value="#{label.menu_usuario}" 
 			            	url="/usuarios.xhtml?faces-redirect=true" 		icon="fa fa-user"/>			            
 			            
@@ -65,7 +99,9 @@
 			        			         		      
 			        		
 			        			        
-			        <p:submenu label="#{label.menu_suporte}">
+			        <p:submenu label="#{label.menu_suporte}"
+			        	rendered="#{indexBean.permissaoUsuario}">
+			        	
 			        	<p:menuitem value="Autorizações" 
 			            	url="/autorizacao.xhtml?faces-redirect=true" 		icon="fa fa-lock"/>	
 			        

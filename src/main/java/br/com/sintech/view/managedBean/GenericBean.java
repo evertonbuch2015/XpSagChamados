@@ -74,9 +74,9 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 	
 	// ================Metodos já implementados (Prontos)=============================
 	
-	public void gravar(){		
+	public void gravar()throws Exception{		
 		try {
-			String mensagem = service.salvar(this.entidade);
+			String mensagem = service.salvar(entidade);
 			refresh();
 			mudarBuscar();
 			
@@ -86,7 +86,8 @@ public abstract class GenericBean<E extends Serializable,T extends GenericServic
 			UtilMensagens.mensagemAtencao(e.getMessage());
 		}
 		catch (Exception e) {
-			UtilMensagens.mensagemErro(e.getMessage());
+			//UtilMensagens.mensagemErro(e.getMessage());
+			throw e;
 		}
 	}
 	

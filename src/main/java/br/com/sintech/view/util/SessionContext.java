@@ -37,7 +37,7 @@ public class SessionContext {
          }else{
              return FacesContext.getCurrentInstance();
          }
-      }    
+     }    
      
      
      public void encerrarSessao(){        

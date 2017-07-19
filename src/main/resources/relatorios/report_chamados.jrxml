@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_chamados" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="88d81490-afc7-4011-b9f8-c398c6b456a8">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="XpSagChamados"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="546"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="440"/>
+	<parameter name="DATA_INICIAL" class="java.sql.Timestamp"/>
+	<parameter name="DATA_FINAL" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT  S.DATA_SOLICITACAO,
+        S.RESUMO_SOLICITACAO,
+        S.SITUACAO,
+        S.PROTOCOLO,
+        U.NOME AS NOME_USUARIO,
+        C.CODIGO AS CODIGO_CLIENTE,
+        C.NOME AS NOME_CLIENTE
+FROM UPD_SUPORTE S
+INNER JOIN UPD_CLIENTES C ON S.COD_UPDCLIENTES = C.COD_UPDCLIENTES
+INNER JOIN SIS_USUARIO U ON U.CODIGOSISUSUARIO = S.CODIGOSISUSUARIO_ABERTURA
+WHERE S.DATA_SOLICITACAO BETWEEN $P{DATA_INICIAL} AND  $P{DATA_FINAL} 
+ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
+	</queryString>
+	<field name="DATA_SOLICITACAO" class="java.sql.Date"/>
+	<field name="RESUMO_SOLICITACAO" class="java.lang.String"/>
+	<field name="SITUACAO" class="java.lang.String"/>
+	<field name="PROTOCOLO" class="java.lang.Double"/>
+	<field name="NOME_USUARIO" class="java.lang.String"/>
+	<field name="CODIGO_CLIENTE" class="java.lang.Integer"/>
+	<field name="NOME_CLIENTE" class="java.lang.String"/>
+	<variable name="QTD" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupCliente" calculation="Count">
+		<variableExpression><![CDATA[$V{QTD}.add( new BigDecimal("1"))]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<group name="GroupCliente">
+		<groupExpression><![CDATA[$F{CODIGO_CLIENTE}]]></groupExpression>
+		<groupHeader>
+			<band height="17">
+				<textField>
+					<reportElement x="0" y="0" width="220" height="10" uuid="33c6f265-bca1-48cd-937c-4a70ae6648d3">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Cliente: " + $F{CODIGO_CLIENTE} +" - "+ $F{NOME_CLIENTE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<line>
+					<reportElement x="0" y="12" width="555" height="1" backcolor="#000000" uuid="7fcb87cb-bc51-483e-bef1-e942e599dd9a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="522" y="0" width="30" height="10" uuid="64fec093-e8a8-425b-800d-21fdefe6b0aa"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{QTD}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="420" y="0" width="100" height="10" uuid="1c47e3db-e7f1-42c7-bd62-81f089bc056e">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Qtd. de Chamados na Data:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="40" backcolor="#667B91" uuid="b8f665ac-f279-4213-9295-b2fc5a3fdff3"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="10" width="210" height="20" forecolor="#FFFFFF" uuid="b186c4de-1cb1-401d-9fc4-ba66d4650895"/>
+				<box>
+					<pen lineWidth="0.0" lineColor="#667B91"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Relatório de Chamados]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="466" y="4" width="85" height="12" forecolor="#FFFFFF" uuid="5c6eb297-427b-4e61-8fe0-7115fa81d7e5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="60" width="555" height="15" backcolor="#E0E0E0" uuid="6b84975d-d385-4bbd-8d70-41af2afdc448"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="80" y="60" width="76" height="16" backcolor="#FFFFFF" uuid="5b4694eb-27d9-4c25-8cfe-e393b62b555d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Protocolo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="60" width="71" height="16" backcolor="#FFFFFF" uuid="4ebcb6bc-1e9e-4a29-9194-b311ebadbbc3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuário Responsável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="80" height="16" backcolor="#FFFFFF" uuid="7e91adfa-8a57-48d9-89fa-1d744be246c1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Solicitação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="60" width="264" height="16" backcolor="#FFFFFF" uuid="ad9737b1-f78f-446e-bef3-77f296db8d72">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="60" width="64" height="16" backcolor="#FFFFFF" uuid="c02a38a8-07d3-4351-974a-3130cc520372"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Situação]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement positionType="Float" x="0" y="1" width="80" height="10" uuid="21d540a2-dcf2-4c77-a04e-b2a1452939ff">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATA_SOLICITACAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="156" y="1" width="64" height="10" uuid="5ecfd93b-2071-4c9a-9317-acad119037cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SITUACAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="80" y="1" width="76" height="10" uuid="a6d68bd3-5181-49b7-b21d-0a6f1d6b31cd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PROTOCOLO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="220" y="1" width="71" height="10" uuid="ebd600af-ef05-4ccd-b6bd-eee0ac721664">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOME_USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="291" y="1" width="264" height="10" uuid="e969ffd1-6e29-4d67-86e8-4f6d704b01c0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RESUMO_SOLICITACAO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="38" splitType="Stretch"/>
+	</summary>
+</jasperReport>

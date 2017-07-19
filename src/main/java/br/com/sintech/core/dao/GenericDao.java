@@ -32,7 +32,7 @@ public abstract class GenericDao<T extends Serializable> {
      * Retorna um novo Entity Manager.
      * @return 
      */
-    protected EntityManager getEntityManager(){
+    public EntityManager getEntityManager(){
     	return JPAUtil.GetInstance().getEntityManager();
     }
     

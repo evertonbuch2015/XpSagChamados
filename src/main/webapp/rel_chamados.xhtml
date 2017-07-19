@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="tituloPagina"> 
+		#{label.titulo_rel_chamados}		
+	</ui:define>
+	
+
+	<ui:define name="conteudo">	
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_relatorios}"/>
+    		<p:menuitem value="#{label.sub_titulo_rel_chamados}" url="#" />
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="20000" />
+		</p:messages>
+		
+		
+		<div class="bu-div20"/>
+		
+		<div class="ui-fluid">
+			<p:panelGrid 
+				styleClass="ui-panelgrid-blank" columns="2"
+				cellpadding="10" layout="grid"
+				columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2">
+				
+				<p:outputLabel value="#{label.data_solicitacao_inicial}" for="dtInicial" />						
+				<p:calendar id="dtInicial"
+							value="#{relChamadoBean.dataInicial}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							required="true"
+							requiredMessage="Informe a Data de Solicitação Inicial"/>							
+				
+				
+				
+				<p:outputLabel value="#{label.data_solicitacao_final}" for="dtFinal" />						
+				<p:calendar id="dtFinal"
+							value="#{relChamadoBean.dataFinal}"
+							pattern="dd/MM/yyyy" mask="true"
+							showOn="button" locale="pt_BR"
+							size="28"
+							required="true"
+							requiredMessage="Informe a Data de Solicitação Final"/>
+				
+				
+				<p:commandButton
+					actionListener="#{relChamadoBean.gerarRelatorio()}" 
+					ajax="false" value="#{label.gerar_relatorio}"
+					onclick="this.form.target='_blank'"/>
+						
+			</p:panelGrid>
+		</div>
+		<p:dialog header="Teste" widgetVar="dialog_Teste">
+
+		</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>

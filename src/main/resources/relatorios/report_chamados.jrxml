@@ -6,8 +6,12 @@
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="546"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="440"/>
 	<parameter name="DATA_INICIAL" class="java.sql.Timestamp"/>
-	<parameter name="DATA_FINAL" class="java.sql.Timestamp">
-		<parameterDescription><![CDATA[]]></parameterDescription>
+	<parameter name="DATA_FINAL" class="java.sql.Timestamp"/>
+	<parameter name="P_COD_UPDCLIENTES" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer("0")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_SITUACAO" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer("0")]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT  S.DATA_SOLICITACAO,
@@ -20,7 +24,14 @@
 FROM UPD_SUPORTE S
 INNER JOIN UPD_CLIENTES C ON S.COD_UPDCLIENTES = C.COD_UPDCLIENTES
 INNER JOIN SIS_USUARIO U ON U.CODIGOSISUSUARIO = S.CODIGOSISUSUARIO_ABERTURA
+
+LEFT JOIN UPD_SUPORTE_STATUS SS ON S.COD_UPDSUPORTE = SS.COD_UPDSUPORTE
+LEFT JOIN UPD_STATUS STATUS ON STATUS.COD_UPDSTATUS = SS.COD_UPDSTATUS
+
 WHERE S.DATA_SOLICITACAO BETWEEN $P{DATA_INICIAL} AND  $P{DATA_FINAL} 
+AND (( 0 =  $P{P_COD_UPDCLIENTES} ) or (S.COD_UPDCLIENTES = $P{P_COD_UPDCLIENTES} ))
+AND (( 0 =  $P{P_SITUACAO} ) OR (STATUS.COD_UPDSTATUS = $P{P_SITUACAO}))
+
 ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 	</queryString>
 	<field name="DATA_SOLICITACAO" class="java.sql.Date"/>
@@ -30,51 +41,31 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 	<field name="NOME_USUARIO" class="java.lang.String"/>
 	<field name="CODIGO_CLIENTE" class="java.lang.Integer"/>
 	<field name="NOME_CLIENTE" class="java.lang.String"/>
-	<variable name="QTD" class="java.math.BigDecimal" resetType="Group" resetGroup="GroupCliente" calculation="Count">
-		<variableExpression><![CDATA[$V{QTD}.add( new BigDecimal("1"))]]></variableExpression>
-		<initialValueExpression><![CDATA[new BigDecimal("0")]]></initialValueExpression>
-	</variable>
 	<group name="GroupCliente">
 		<groupExpression><![CDATA[$F{CODIGO_CLIENTE}]]></groupExpression>
 		<groupHeader>
-			<band height="17">
+			<band height="14">
 				<textField>
-					<reportElement x="0" y="0" width="220" height="10" uuid="33c6f265-bca1-48cd-937c-4a70ae6648d3">
+					<reportElement x="0" y="0" width="240" height="10" uuid="33c6f265-bca1-48cd-937c-4a70ae6648d3">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<textElement>
-						<font fontName="SansSerif" size="6" isBold="true"/>
+						<font fontName="Arial Black" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Cliente: " + $F{CODIGO_CLIENTE} +" - "+ $F{NOME_CLIENTE}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="18">
+			<band height="4">
 				<line>
-					<reportElement x="0" y="12" width="555" height="1" backcolor="#000000" uuid="7fcb87cb-bc51-483e-bef1-e942e599dd9a">
+					<reportElement x="0" y="3" width="555" height="1" backcolor="#000000" uuid="7fcb87cb-bc51-483e-bef1-e942e599dd9a">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<graphicElement>
 						<pen lineStyle="Dashed"/>
 					</graphicElement>
 				</line>
-				<textField>
-					<reportElement x="522" y="0" width="30" height="10" uuid="64fec093-e8a8-425b-800d-21fdefe6b0aa"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{QTD}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="420" y="0" width="100" height="10" uuid="1c47e3db-e7f1-42c7-bd62-81f089bc056e">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Qtd. de Chamados na Data:]]></text>
-				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -87,7 +78,7 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 				<reportElement x="0" y="0" width="555" height="40" backcolor="#667B91" uuid="b8f665ac-f279-4213-9295-b2fc5a3fdff3"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="10" y="10" width="210" height="20" forecolor="#FFFFFF" uuid="b186c4de-1cb1-401d-9fc4-ba66d4650895"/>
+				<reportElement x="150" y="4" width="210" height="20" forecolor="#FFFFFF" uuid="b186c4de-1cb1-401d-9fc4-ba66d4650895"/>
 				<box>
 					<pen lineWidth="0.0" lineColor="#667B91"/>
 				</box>
@@ -149,12 +140,19 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 				</textElement>
 				<text><![CDATA[Situação]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="150" y="24" width="210" height="10" forecolor="#FFFFFF" uuid="67ebff91-e4b9-4e4e-a278-f490abec2632"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Intervalo de Data:   de  " + new SimpleDateFormat("dd/MM/yyyy").format($P{DATA_INICIAL}) +"   até   " + new SimpleDateFormat("dd/MM/yyyy").format($P{DATA_FINAL})]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
-		<band height="11" splitType="Stretch">
+		<band height="10" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement positionType="Float" x="0" y="1" width="80" height="10" uuid="21d540a2-dcf2-4c77-a04e-b2a1452939ff">
+				<reportElement positionType="Float" x="0" y="1" width="80" height="9" uuid="21d540a2-dcf2-4c77-a04e-b2a1452939ff">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -163,14 +161,14 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 				<textFieldExpression><![CDATA[$F{DATA_SOLICITACAO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="156" y="1" width="64" height="10" uuid="5ecfd93b-2071-4c9a-9317-acad119037cc"/>
+				<reportElement positionType="Float" x="156" y="1" width="64" height="9" uuid="5ecfd93b-2071-4c9a-9317-acad119037cc"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SITUACAO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="80" y="1" width="76" height="10" uuid="a6d68bd3-5181-49b7-b21d-0a6f1d6b31cd">
+				<reportElement positionType="Float" x="80" y="1" width="76" height="9" uuid="a6d68bd3-5181-49b7-b21d-0a6f1d6b31cd">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -179,7 +177,7 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 				<textFieldExpression><![CDATA[$F{PROTOCOLO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="220" y="1" width="71" height="10" uuid="ebd600af-ef05-4ccd-b6bd-eee0ac721664">
+				<reportElement positionType="Float" x="220" y="1" width="71" height="9" uuid="ebd600af-ef05-4ccd-b6bd-eee0ac721664">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -188,7 +186,9 @@ ORDER BY S.COD_UPDCLIENTES, S.DATA_SOLICITACAO]]>
 				<textFieldExpression><![CDATA[$F{NOME_USUARIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="291" y="1" width="264" height="10" uuid="e969ffd1-6e29-4d67-86e8-4f6d704b01c0"/>
+				<reportElement positionType="Float" x="291" y="1" width="264" height="9" uuid="e969ffd1-6e29-4d67-86e8-4f6d704b01c0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="5"/>
 				</textElement>

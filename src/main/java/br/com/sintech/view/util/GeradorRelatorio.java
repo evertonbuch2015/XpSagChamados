@@ -44,9 +44,14 @@ public class GeradorRelatorio implements Work{
             JasperReport relatorio = JasperCompileManager.compileReport(desenho);
 			
 
-            //Primeira Forma de Fazer 
 			JasperPrint print = JasperFillManager.fillReport(relatorio, parametros,connection);			
+
+			
+			//Primeira Forma de Fazer 
 			byte[] b = JasperExportManager.exportReportToPdf(print);
+			response.setContentType("application/pdf");
+			response.getOutputStream().write(b);
+			response.getCharacterEncoding();
 			
 			
 			//Segunda Forma de fazer
@@ -55,10 +60,8 @@ public class GeradorRelatorio implements Work{
 			//exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
 			//exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "UTF-8");
 			//exporter.exportReport();
+			//response.setContentType("application/pdf");
 			
-			response.setContentType("application/pdf");
-			response.getOutputStream().write(b);
-			response.getCharacterEncoding();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SQLException("Erro ao gerar o relatório /n" + this.caminhoRelatorio,e);			

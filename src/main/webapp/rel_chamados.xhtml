@@ -1,14 +1,12 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui" 
 	template="/WEB-INF/template.xhtml">
 
-	<ui:define name="tituloPagina"> 
-		#{label.titulo_rel_chamados}		
-	</ui:define>
-	
+	<ui:define name="tituloPagina"> #{label.titulo_rel_chamados}</ui:define>
 
 	<ui:define name="conteudo">	
 		<p:breadCrumb>
@@ -25,20 +23,22 @@
 		
 		<div class="bu-div20"/>
 		
-		<div class="ui-fluid">
+		<div class="ui-fluid">			
 			<p:panelGrid 
 				styleClass="ui-panelgrid-blank" columns="2"
 				cellpadding="10" layout="grid"
-				columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2">
+				columnClasses="ui-grid-col-2,ui-grid-col-3">
 				
 				<p:outputLabel value="#{label.data_solicitacao_inicial}" for="dtInicial" />						
 				<p:calendar id="dtInicial"
 							value="#{relChamadoBean.dataInicial}"
 							pattern="dd/MM/yyyy" mask="true"
 							showOn="button" locale="pt_BR"
-							size="28"
-							required="true"
-							requiredMessage="Informe a Data de Solicitação Inicial"/>							
+							size="28" required="true">
+							
+					<p:ajax event="dateSelect" update="btnGerar"
+						listener="#{relChamadoBean.onDataSelect}"/>
+				</p:calendar>							
 				
 				
 				
@@ -47,22 +47,33 @@
 							value="#{relChamadoBean.dataFinal}"
 							pattern="dd/MM/yyyy" mask="true"
 							showOn="button" locale="pt_BR"
-							size="28"
-							required="true"
-							requiredMessage="Informe a Data de Solicitação Final"/>
+							size="28" required="true">
+							
+					<p:ajax event="dateSelect" update="btnGerar" 
+						listener="#{relChamadoBean.onDataSelect}"/>
+				</p:calendar>
+				
+				
+				<p:outputLabel value="#{label.situacao}" for="situacao"/>
+				<p:selectOneMenu id="situacao"
+					value="#{relChamadoBean.situacaoChamado}">  
+					
+					<f:selectItem itemLabel="Todos as Situações" itemValue="null"/>
+						
+					<f:selectItems value="#{relChamadoBean.situacoesChamado}"
+						var="a" itemValue="#{a}" itemLabel="#{a.descricao}"/>
+				</p:selectOneMenu>
 				
 				
 				<p:commandButton
+					id="btnGerar"
 					actionListener="#{relChamadoBean.gerarRelatorio()}" 
 					ajax="false" value="#{label.gerar_relatorio}"
-					onclick="this.form.target='_blank'"/>
+					onclick="this.form.target='_blank'"
+					disabled="#{!relChamadoBean.datasIsNull}"/>
 						
 			</p:panelGrid>
 		</div>
-		<p:dialog header="Teste" widgetVar="dialog_Teste">
-
-		</p:dialog>
-		
 	</ui:define>
 
 </ui:composition>

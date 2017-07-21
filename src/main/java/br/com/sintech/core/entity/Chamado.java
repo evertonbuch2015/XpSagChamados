@@ -37,7 +37,7 @@ public class Chamado implements Serializable{
 	
 	
 	@Column(name="PROTOCOLO")
-	private Double protocolo;
+	private String protocolo;
 	
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -99,18 +99,18 @@ public class Chamado implements Serializable{
 	}
 
 
-	public Double getProtocolo() {
+	public String getProtocolo() {
 		return protocolo;
 	}
 
-	public void setProtocolo(Double protocolo) {
+	public void setProtocolo(String protocolo) {
 		this.protocolo = protocolo;
 	}
 
 	
 	public String getDataSolicitacaoFormatada() {
 		if(this.dataSolicitacao != null){
-			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataSolicitacao);
+			return new SimpleDateFormat("dd/MM/yyyy").format(dataSolicitacao);
 		}
 		return "";
 	}
@@ -126,7 +126,7 @@ public class Chamado implements Serializable{
 	
 	public String getDataEncerramentoFormatada() {
 		if(this.dataEncerramento != null){
-			return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(dataEncerramento);
+			return new SimpleDateFormat("dd/MM/yyyy").format(dataEncerramento);
 		}
 		return "";
 	}

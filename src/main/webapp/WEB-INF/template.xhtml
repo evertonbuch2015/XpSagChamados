@@ -95,10 +95,11 @@
 			        <p:submenu label="#{label.menu_suporte}"
 			        	rendered="#{indexBean.permissaoUsuario}">
 			        	
-			        	<p:menuitem value="Autorizações" url="#"  icon="fa fa-lock"/>	
+			        	<p:menuitem value="Autorizações"
+			        		url="/autorizacoes.xhtml?faces-redirect=true" 		icon="fa fa-lock"/>	
 			        
 						<p:menuitem value="#{label.menu_solicitacoes}" 		
-							url="/chamados.xhtml?faces-redirect=true"			icon="fa fa-wrench" />
+							url="/chamados.xhtml?faces-redirect=true"		icon="fa fa-wrench" />
 	                            
 			        </p:submenu>
 			        

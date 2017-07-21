@@ -1,12 +1,17 @@
 package br.com.sintech.core.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import br.com.sintech.core.dao.ChamadoAnexoDao;
 import br.com.sintech.core.dao.ChamadoDao;
+import br.com.sintech.core.dao.JDBCUtil;
+import br.com.sintech.core.dao.JDBCUtil.UrlConexao;
 import br.com.sintech.core.entity.Chamado;
 import br.com.sintech.core.entity.ChamadoAnexo;
 import br.com.sintech.core.entity.GrupoUsuario;
@@ -15,6 +20,13 @@ import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.core.util.UtilErros;
 import br.com.sintech.view.managedBean.ChamadoBean.TipoFiltro;
 import br.com.sintech.view.util.SessionContext;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 public class ServiceChamado implements GenericService<Chamado> {
 
@@ -36,10 +48,9 @@ public class ServiceChamado implements GenericService<Chamado> {
 
 				String protocolo = 
 						new SimpleDateFormat("yyyyMM").format(new java.util.Date())+ 
-						String.format("%04d", dao.getCodigoProtocolo());
-				
-				Double num = Double.parseDouble(protocolo);
-				entidade.setProtocolo(num);
+						String.format("%05d", dao.getCodigoProtocolo());
+								
+				entidade.setProtocolo(protocolo);
 				
 				
 				for (ChamadoAnexo anexo : entidade.getAnexos()) {
@@ -133,10 +144,10 @@ public class ServiceChamado implements GenericService<Chamado> {
 		try {
 			
 			if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario() == GrupoUsuario.ADMIN){
-				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? order by c.dataSolicitacao";				
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? order by c.dataSolicitacao desc";				
 				lista = dao.find(jpql, d);
 			}else{
-				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? and c.empresa = ? order by c.dataSolicitacao";
+				String jpql = "Select c From Chamado c left JOIN FETCH c.empresa where c.dataSolicitacao >= ? and c.empresa = ? order by c.dataSolicitacao desc";
 				lista = dao.find(jpql, d, SessionContext.getInstance().getEmpresaUsuarioLogado());
 			}
 			
@@ -214,4 +225,30 @@ public class ServiceChamado implements GenericService<Chamado> {
             		" \nErro: " + UtilErros.getMensagemErro(e));
 		}					
 	}
+
+	
+	public JasperPrint getReportByDataSolicitacaoSituacao(String caminhoRelatorio, Map<String, Object> parametros)throws SQLException, JRException{
+		Connection conn = null;
+		try {			
+			//gerando o jasper design
+            JasperDesign desenho = JRXmlLoader.load(this.getClass().getResourceAsStream(caminhoRelatorio));
+
+            //compila o relatório
+            JasperReport relatorio = JasperCompileManager.compileReport(desenho);
+			
+            conn = JDBCUtil.GetInstance().getConnection(UrlConexao.URL_SINTECH);
+            
+			JasperPrint print = JasperFillManager.fillReport(relatorio, parametros, conn);
+			
+			return print;
+			
+		}catch(SQLException ex){		
+			throw new SQLException("Erro ao gerar o relatório " + caminhoRelatorio, ex);
+		}finally {
+			if(conn != null && !conn.isClosed()){
+				conn.close();
+			}			
+		}
+	}
+
 }

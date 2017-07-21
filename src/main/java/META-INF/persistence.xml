@@ -12,7 +12,7 @@
 		<class>br.com.sintech.core.entity.SituacaoChamado</class>
 		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:localhost/3050:SUPORTE"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:firebirdsql:192.168.1.12/3051:SUPORTE"/>
 			<property name="javax.persistence.jdbc.user" value="sysdba"/>
 			<property name="javax.persistence.jdbc.password" value="masterkey"/>
 			<property name="javax.persistence.jdbc.driver" value="org.firebirdsql.jdbc.FBDriver"/>

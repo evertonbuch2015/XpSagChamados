@@ -1,0 +1,94 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="tituloPagina"> #{label.titulo_autorizacoes}</ui:define>
+
+	<ui:define name="conteudo">	
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/index.xhtml" />
+			<p:menuitem value="#{label.menu_autorizacoes}"/>
+    		<p:menuitem value="#{label.sub_titulo_autorizacoes}" url="#" />
+		</p:breadCrumb>
+		
+		<p:messages autoUpdate="true" closable="true">
+			<p:effect type="pulsate" event="load" delay="500" />
+			<p:effect type="clip" event="load" delay="20000" />
+		</p:messages>
+		
+		
+		<div class="bu-div20"/>
+		
+		<p:tabView rendered="#{programaBean.buscando}" prependId="false">
+		
+			<p:tab title="Consulta"> 	
+			
+				<p:panelGrid 
+					rendered="#{autorizacaoBean.mostrarPanel}"
+					styleClass="ui-panelgrid-blank" columns="3"
+					cellpadding="10" layout="grid"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2">
+				
+				
+					<p:outputLabel value="Selecione a Empresa" for="empresa"/>
+					<p:selectOneMenu id="empresa" autoWidth="false"
+						value="#{autorizacaoBean.empresa}"> 
+							
+						<f:selectItems value="#{autorizacaoBean.empresas}"
+							var="a" itemValue="#{a}" itemLabel="#{a.nomeRazao}"/>
+					</p:selectOneMenu>
+				
+				
+					<p:commandButton
+						id="btnGerar"
+						actionListener="#{autorizacaoBean.buscarAutorizacoes}" 
+						value="#{label.pesquisar}" update="tabela"/>
+				
+				</p:panelGrid>
+			
+			
+				<p:dataTable id="tabela"
+					value="#{autorizacaoBean.listaAutorizacoes}" var="entidade" 
+					selection="#{autorizacaoBean.autorizacao}" selectionMode="single"
+					rowKey="#{entidade.idAutorizacao}" reflow="true"									
+					emptyMessage="#{label.msg_tabela_vazia}"
+					style="margin: 0px 8px;" 
+					rows="13"
+    				paginator="true" paginatorAlwaysVisible="false" 
+    				paginatorPosition="bottom">
+    									
+					
+					<p:column headerText="Código" width="70" sortBy="#{entidade.idAutorizacao}">
+						<h:outputText value="#{entidade.idAutorizacao}" />
+					</p:column>
+					
+					
+					<p:column headerText="Mês" width="70" sortBy="#{entidade.mes}">
+						<h:outputText value="#{entidade.mes}" />
+					</p:column>
+					
+					
+					<p:column headerText="Ano" width="70" sortBy="#{entidade.ano}">
+						<h:outputText value="#{entidade.ano}" />
+					</p:column>
+					
+					<p:column headerText="Autorização" width="70">
+						<h:outputText value="#{entidade.autorizacao}" />
+					</p:column>
+					
+					
+					<p:column headerText="Código Empresa" width="100" 
+						style="text-align: left">						
+						<h:outputText value="#{entidade.codigoEmpresa}" />
+					</p:column>					
+
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>

@@ -42,7 +42,11 @@ public class DialogProgramaBean implements Serializable{
 
 				@Override
 				public boolean evaluate(Programa arg0) {
-					return ((Programa) arg0).getNome().contains(filter);
+					if(((Programa) arg0).getNome() != null){
+						return ((Programa) arg0).getNome().contains(filter);
+					}else{
+						return false;
+					}					
 				}
 			});
 		}		

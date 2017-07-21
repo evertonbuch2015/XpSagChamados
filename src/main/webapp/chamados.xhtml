@@ -37,7 +37,7 @@
 					selection="#{chamadoBean.entidade}" selectionMode="single"
 					rowKey="#{entidade.idChamado}" reflow="true"									
 					emptyMessage="#{label.msg_tabela_vazia}"
-					style="margin: 0px -11px;"
+					style="margin: 0px -8px;"
 					rows="13"
     				paginator="true" paginatorAlwaysVisible="false" 
     				paginatorPosition="bottom">				
@@ -49,31 +49,34 @@
 					<p:ajax event="rowSelect" listener="#{chamadoBean.onRowSelect}" />
 
 
-					<p:column headerText="#{label.protocolo}" width="110" sortBy="#{entidade.protocolo}">
+					<p:column headerText="#{label.protocolo}" width="100">
 						<h:outputText value="#{entidade.protocolo}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.situacao}" width="110" 
-						sortBy="#{entidade.situacao}" priority="2">
-						
-						<h:outputText value="#{entidade.situacao}" />
-					</p:column>
-					
-					
 					<p:column headerText="#{label.data_solicitacao}" width="120" 
-						sortBy="#{entidade.dataSolicitacao}" priority="3">
+						sortBy="#{entidade.dataSolicitacao}" priority="3"
+						style="text-align: left;">
 						
 						<h:outputText value="#{entidade.dataSolicitacaoFormatada}" />
 					</p:column>
 					
 					
-					<p:column headerText="#{label.empresa}" sortBy="#{entidade.empresa.nomeRazao}">
-						<h:outputText value="#{entidade.empresa.nomeFantasia}" />
+					<p:column headerText="#{label.situacao}" width="115" 
+						sortBy="#{entidade.situacao}" priority="2"
+						style="text-align: left;">
+						
+						<h:outputText value="#{entidade.situacao}" />
+					</p:column>
+					
+					<p:column headerText="#{label.empresa}" 
+						sortBy="#{entidade.empresa.nomeRazao}"
+						style="text-align: left;">
+						<h:outputText value="#{entidade.empresa.nomeRazao}" />
 					</p:column>
 
 
-					<p:column headerText="#{label.titulo}" >
+					<p:column headerText="#{label.titulo}" style="text-align: left;">
 						<h:outputText value="#{entidade.titulo.toLowerCase()}" />
 					</p:column>
 					
@@ -205,7 +208,7 @@
 					cellpadding="10" layout="grid" style="width: 100%">
 
 					<p:fileUpload fileUploadListener="#{chamadoBean.doUpload}" mode="advanced"
-	                	label="Procurar..." allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|docx?)$/" 
+	                	label="Procurar..." allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|docx?|xml)$/" 
 	                    style="width: 100%" update="tabelaArquivos"
 	                    disabled="#{chamadoBean.visualizando}"/>					
 				</p:panelGrid>
@@ -253,7 +256,7 @@
 					emptyMessage="#{label.msg_tabela_vazia}"
 					style="margin: 0px 20px;">									
 					
-					<p:column headerText="#{label.situacao}" width="90">
+					<p:column headerText="#{label.situacao}" width="120">
 						<h:outputText value="#{movimento.situacao.descricao}" />
 					</p:column>
 

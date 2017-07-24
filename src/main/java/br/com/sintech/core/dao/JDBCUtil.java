@@ -16,7 +16,7 @@ public class JDBCUtil {
 	private static final String DRIVER 	= "org.firebirdsql.jdbc.FBDriver";
 	
 	private static final String URL_SINTECH 	= "jdbc:firebirdsql:192.168.1.12/3050:SINTECH";
-	private static final String URL_SUPORTE 	= "jdbc:firebirdsql:192.168.1.12/3051:SUPORTE";
+	private static final String URL_SUPORTE 	= "jdbc:firebirdsql:localhost/3050:SUPORTE";
 	private static final String URL_RUDAR	 	= "jdbc:firebirdsql:192.168.1.12/3050:RUDAR";
 	
 	private static final String USUARIO	= "SYSDBA";
@@ -31,7 +31,7 @@ public class JDBCUtil {
 	}
 	
 	
-	public static synchronized JDBCUtil GetInstance() {
+	public static synchronized JDBCUtil getInstance() {
 		if (instanceJDBCUtil == null) {
 			instanceJDBCUtil = new JDBCUtil();
 		}

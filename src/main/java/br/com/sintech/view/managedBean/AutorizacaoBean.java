@@ -11,13 +11,15 @@ import br.com.sintech.core.dao.AutorizacaoDao;
 import br.com.sintech.core.entity.Autorizacao;
 import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.util.Constantes;
+import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.view.util.SessionContext;
+import br.com.sintech.view.util.UtilMensagens;
 
 @ManagedBean
 @ViewScoped
 public class AutorizacaoBean implements Serializable{
 
-	
+	private static final long serialVersionUID = -7788910464093760104L;
 	private Empresa empresa;
 	private AutorizacaoDao autorizacaoDao;
 	private List<Autorizacao> listaAutorizacoes;
@@ -38,7 +40,12 @@ public class AutorizacaoBean implements Serializable{
 	
 		
 	public void buscarAutorizacoes(){
-		listaAutorizacoes = autorizacaoDao.findByEmpresa(empresa);
+		try {
+			listaAutorizacoes = autorizacaoDao.findAutorizacaoByEmpresa(empresa);
+		} catch (PersistenciaException e) {
+			UtilMensagens.mensagemErro("Ocorreu um Erro ao Buscar as Autorizações. Erro Nº 100, contate o Suporte.");
+			e.printStackTrace();
+		}
 	}
 	
 	

@@ -1,22 +1,18 @@
 package br.com.sintech.core.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.sintech.core.dao.JDBCUtil.UrlConexao;
 import br.com.sintech.core.entity.Autorizacao;
 import br.com.sintech.core.entity.Empresa;
+import br.com.sintech.core.util.PersistenciaException;
 
 public class AutorizacaoDao {
-
-	private static final String DRIVER 	= "org.firebirdsql.jdbc.FBDriver"; 
-	private static final String URL 	= "jdbc:firebirdsql:192.168.1.12/3050:SINTECH"; 
-	private static final String USUARIO	= "SYSDBA";
-	private static final String SENHA 	= "masterkey";
 	
 	private String BUSCAR_POR_EMPRESA = 
 			" SELECT A.COD_RUDAUTORIZACAO, A.MES, A.ANO, A.AUTORIZACAO, C.CODIGO, C.FANTASIA, P.DOCUMENTO" + 
@@ -25,38 +21,30 @@ public class AutorizacaoDao {
 			" INNER JOIN CAD_PESSOA P ON P.CODIGO_PESSOA = c.CODIGO_PESSOA "+
 			" WHERE C.CODIGO = %s";
 	
-	private Connection conn;
-	
 	
 	public AutorizacaoDao() {
 
 	}
-	
-	
-	private void conectar() throws SQLException{
-		System.setProperty("jdbc.Drivers", DRIVER); 
-		conn = DriverManager.getConnection(URL, USUARIO, SENHA);
-	}
-	
-		
-    private void desconectar()throws SQLException{      
-    	conn.close();
-    }
     
-    
+	
     private ResultSet executaSQL(String sql)throws SQLException{
-    	Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-    	return stm.executeQuery(sql);
+    	Connection conn = null;
+	    try{
+	    	conn = JDBCUtil.getInstance().getConnection(UrlConexao.URL_SINTECH);
+	    	
+	    	Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+	    	return stm.executeQuery(sql);
+	    }finally{
+	        conn.close();
+	    }
     }
     
     
 
-    public List<Autorizacao> findByEmpresa(Empresa empresa){
+    public List<Autorizacao> findAutorizacaoByEmpresa(Empresa empresa)throws PersistenciaException{
         List<Autorizacao> lista = new ArrayList<>();
         
-        try {
-        	conectar();        	
-        	
+        try {        	
         	ResultSet rs = executaSQL(String.format(BUSCAR_POR_EMPRESA, empresa.getCodigo()));        	
         	rs.first();
         	
@@ -76,13 +64,7 @@ public class AutorizacaoDao {
         	
         	
         } catch (SQLException ex) {
-
-        }finally{
-            try {
-				desconectar();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+        	throw new PersistenciaException(ex);
         }
         
         return lista;

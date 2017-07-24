@@ -236,7 +236,7 @@ public class ServiceChamado implements GenericService<Chamado> {
             //compila o relatório
             JasperReport relatorio = JasperCompileManager.compileReport(desenho);
 			
-            conn = JDBCUtil.GetInstance().getConnection(UrlConexao.URL_SINTECH);
+            conn = JDBCUtil.getInstance().getConnection(UrlConexao.URL_SUPORTE);
             
 			JasperPrint print = JasperFillManager.fillReport(relatorio, parametros, conn);
 			
@@ -250,5 +250,5 @@ public class ServiceChamado implements GenericService<Chamado> {
 			}			
 		}
 	}
-
+	
 }

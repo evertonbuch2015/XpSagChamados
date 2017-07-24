@@ -15,7 +15,16 @@
 
 
 	<ui:define name="conteudo">	
-			
+		
+		<div class="bu-div20"/>
+		<p:panelGrid 
+				styleClass="ui-panelgrid-blank" columns="1" layout="grid"
+				columnClasses="ui-grid-col-12">
+						
+			<p:chart type="bar" model="#{indexBean.barChartModel}"  responsive="true" rendered="#{indexBean.renderizarChart}" />
+		
+		</p:panelGrid>
+
 	</ui:define>
 
 </ui:composition>

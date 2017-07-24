@@ -2,16 +2,26 @@ package br.com.sintech.view.managedBean;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+
+import br.com.sintech.core.dao.ChamadoDao;
+import br.com.sintech.core.entity.GrupoUsuario;
 import br.com.sintech.core.entity.Usuario;
+import br.com.sintech.core.entityVO.ChamadoDashboardVO;
+import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.view.util.SessionContext;
 
 
@@ -24,7 +34,8 @@ public class IndexBean implements Serializable {
 	private String localeCode;
 	private static Map<String, Locale> countries;
 	private Usuario usuarioLogado;
-	private boolean permissaoAdmin,permissaoProgramador,permissaoSuporte,permissaoUsuario;
+	private boolean permissaoAdmin, permissaoProgramador, permissaoSuporte, permissaoUsuario;
+	private BarChartModel barChartModel;
 	
 	static {
 		countries = new LinkedHashMap<String, Locale>();
@@ -33,11 +44,20 @@ public class IndexBean implements Serializable {
 	}
 
 	
-	public IndexBean() {
-		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();
-		atribuirPermissoes();
+	public IndexBean(){
+		usuarioLogado = SessionContext.getInstance().getUsuarioLogado();				
 	}
 
+	
+	@PostConstruct
+	public void init(){
+		atribuirPermissoes();
+		
+		if(SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario().equals(GrupoUsuario.USUARIO)){
+			initChartModel();
+		}
+	}
+	
 	// =======================METODOS DO USUARIO=====================================	
 	
 	public void localeCodeChanged(AjaxBehaviorEvent e) {
@@ -56,6 +76,38 @@ public class IndexBean implements Serializable {
 		SessionContext.getInstance().encerrarSessao();
 	    
 	    return "/login?faces-redirect=true";
+	}
+	
+	
+	private void initChartModel(){
+		ChartSeries series;
+		try {
+			this.barChartModel = new BarChartModel();
+			
+			series = new ChartSeries();
+			series.setLabel("Chamados");
+			
+			List<ChamadoDashboardVO>	lista = 
+					new ChamadoDao().getChamadosVOBySituacao(SessionContext.getInstance().getEmpresaUsuarioLogado());
+			
+			for (ChamadoDashboardVO entidade : lista) {
+				series.set(entidade.getDataSolicitacaoFormatada(), entidade.getQtd());
+			}
+			
+
+			barChartModel.setBarWidth(25);
+			barChartModel.addSeries(series);
+			barChartModel.setShowPointLabels(true);
+			barChartModel.setAnimate(true);
+			barChartModel.setTitle("Histórico de Chamados registrados por Mês/Ano");
+			barChartModel.setLegendPosition("ne");
+					
+			barChartModel.getAxis(AxisType.X).setTickAngle(-50);;
+
+		} catch (PersistenciaException e) {			
+			e.printStackTrace();
+			this.barChartModel = new BarChartModel();
+		}
 	}
 	
 	// =============================GET AND SET======================================
@@ -88,34 +140,7 @@ public class IndexBean implements Serializable {
 		permissaoAdmin = SessionContext.getInstance().usuarioLogadoIsADMIN();
 		permissaoProgramador = SessionContext.getInstance().usuarioLogadoIsPROGRAMADOR();
 		permissaoSuporte = SessionContext.getInstance().usuarioLogadoIsSUPORTE();
-		permissaoUsuario = SessionContext.getInstance().usuarioLogadoIsUSUARIO();
-		
-		/*switch (usuarioLogado.getGrupoUsuario()) {
-		case ADMIN:
-			permissaoAdmin = true; 
-			permissaoProgramador = true;
-			permissaoSuporte = true;
-			permissaoUsuario = true;
-			break;
-		case PROGRAMADOR:
-			permissaoAdmin = false; 
-			permissaoProgramador = true;
-			permissaoSuporte = true;
-			permissaoUsuario = true;
-			break;
-		case SUPORTE:
-			permissaoAdmin = false;
-			permissaoProgramador = false;
-			permissaoSuporte = true;
-			permissaoUsuario = true;
-			break;
-		case USUARIO:
-			permissaoAdmin = false;
-			permissaoProgramador = false;
-			permissaoSuporte = false;
-			permissaoUsuario = true;
-			break;
-		}*/
+		permissaoUsuario = SessionContext.getInstance().usuarioLogadoIsUSUARIO();		
 	}
 
 	
@@ -134,4 +159,14 @@ public class IndexBean implements Serializable {
 	public boolean isPermissaoUsuario() {
 		return permissaoUsuario;
 	}	
+
+	
+	public BarChartModel getBarChartModel() {
+		return barChartModel;
+	}
+
+
+	public boolean isRenderizarChart() {
+		return SessionContext.getInstance().getUsuarioLogado().getGrupoUsuario().equals(GrupoUsuario.USUARIO);
+	}
 }

@@ -11,7 +11,6 @@ import br.com.sintech.core.dao.AutorizacaoDao;
 import br.com.sintech.core.entity.Autorizacao;
 import br.com.sintech.core.entity.Empresa;
 import br.com.sintech.core.util.Constantes;
-import br.com.sintech.core.util.PersistenciaException;
 import br.com.sintech.view.util.SessionContext;
 import br.com.sintech.view.util.UtilMensagens;
 
@@ -42,7 +41,7 @@ public class AutorizacaoBean implements Serializable{
 	public void buscarAutorizacoes(){
 		try {
 			listaAutorizacoes = autorizacaoDao.findAutorizacaoByEmpresa(empresa);
-		} catch (PersistenciaException e) {
+		} catch (Exception e) {
 			UtilMensagens.mensagemErro("Ocorreu um Erro ao Buscar as Autorizações. Erro Nº 100, contate o Suporte.");
 			e.printStackTrace();
 		}

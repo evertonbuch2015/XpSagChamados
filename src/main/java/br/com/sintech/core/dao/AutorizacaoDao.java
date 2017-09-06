@@ -21,6 +21,7 @@ public class AutorizacaoDao {
 			" INNER JOIN CAD_PESSOA P ON P.CODIGO_PESSOA = c.CODIGO_PESSOA "+
 			" WHERE C.CODIGO = %s";
 	
+	Connection conn = null;
 	
 	public AutorizacaoDao() {
 
@@ -28,20 +29,17 @@ public class AutorizacaoDao {
     
 	
     private ResultSet executaSQL(String sql)throws SQLException{
-    	Connection conn = null;
-	    try{
-	    	conn = JDBCUtil.getInstance().getConnection(UrlConexao.URL_SINTECH);
-	    	
-	    	Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-	    	return stm.executeQuery(sql);
-	    }finally{
-	        conn.close();
-	    }
+    	if(this.conn == null || this.conn.isClosed()){
+    		conn = JDBCUtil.getInstance().getConnection(UrlConexao.URL_SINTECH);
+    	}
+    	
+    	Statement stm = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+    	return stm.executeQuery(sql);
     }
     
     
 
-    public List<Autorizacao> findAutorizacaoByEmpresa(Empresa empresa)throws PersistenciaException{
+    public List<Autorizacao> findAutorizacaoByEmpresa(Empresa empresa)throws Exception{
         List<Autorizacao> lista = new ArrayList<>();
         
         try {        	
@@ -65,7 +63,9 @@ public class AutorizacaoDao {
         	
         } catch (SQLException ex) {
         	throw new PersistenciaException(ex);
-        }
+        }finally{
+        	this.conn.close();
+	    }
         
         return lista;
     }

@@ -116,7 +116,9 @@ public class ServiceChamado implements GenericService<Chamado> {
 	public Chamado carregarEntidade(Chamado entidade) throws PersistenciaException {
 		String jpql = "Select c From Chamado c left JOIN FETCH c.programa "
 				+ " left JOIN FETCH c.usuario "
-				+ " left JOIN FETCH c.movimentos "
+				+ " left JOIN FETCH c.movimentos mov"
+				+ " left JOIN FETCH mov.responsavel"
+				+ " left JOIN FETCH mov.situacao"
 				+ " left JOIN FETCH c.empresa "
 				+ " where c.idChamado = ?1";
 		
